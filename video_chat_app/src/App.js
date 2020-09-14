@@ -5,7 +5,7 @@ import { Router } from "@reach/router";
 import RoomCreator from "./Components/RoomCreator";
 import Lobby from "./Components/Lobby";
 import Login from "./Components/Login";
-import ErrorPage from "./Components/ErrorPage";
+// import ErrorPage from "./Components/ErrorPage";
 
 const App = () => {
   return (
