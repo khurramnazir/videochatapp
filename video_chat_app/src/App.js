@@ -6,8 +6,16 @@ import RoomCreator from "./Components/RoomCreator";
 import Lobby from "./Components/Lobby";
 import Login from "./Components/Login";
 // import ErrorPage from "./Components/ErrorPage";
+import io from "socket.io-client";
+import { useEffect } from "react";
 
 const App = () => {
+  io({ transports: ["websocket"], upgrade: false });
+
+  useEffect(() => {
+    io.connect("http://localhost:5000");
+  }, []);
+
   return (
     <div className="App">
       <Header />

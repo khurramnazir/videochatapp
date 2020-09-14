@@ -8,6 +8,7 @@ const Lobby = (props) => {
   const { origin, pathname } = props.location;
   const link = origin + "/login" + pathname;
 
+  console.log(user);
   return (
     <>
       {user ? (
