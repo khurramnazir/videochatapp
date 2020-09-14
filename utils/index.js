@@ -11,6 +11,6 @@ exports.pairUp = (allMembers) => {
   for (let i = 0; i < allMembersCopy.length * 0.5; i++) {
     pairs.push([evenIndices[i], oddIndices[i]]);
   }
-
+  console.log(pairs);
   return pairs;
 };
