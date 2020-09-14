@@ -8,4 +8,9 @@ app.get("/", function (req, res) {
 
 // update the res.send file to the actual page when started.
 
+io.on("connection", (socket) => {
+  console.log("Client connected");
+  socket.on("disconnect", () => console.log("Client disconnected"));
+});
+
 module.exports = http;
