@@ -1,0 +1,23 @@
+{
+  "name": "videochatapp",
+  "version": "1.0.0",
+  "description": "hello",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khurramnazir/videochatapp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/khurramnazir/videochatapp/issues"
+  },
+  "homepage": "https://github.com/khurramnazir/videochatapp#readme",
+  "engines": {
+    "node": "12.18.1"
+  }
+}
