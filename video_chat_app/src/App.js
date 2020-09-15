@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import Header from "./Components/Header";
 import { Router } from "@reach/router";
@@ -7,13 +7,16 @@ import Lobby from "./Components/Lobby";
 import Login from "./Components/Login";
 // import ErrorPage from "./Components/ErrorPage";
 import io from "socket.io-client";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 const App = () => {
-  io({ transports: ["websocket"], upgrade: false });
+  //io({ transports: ["websocket"], upgrade: false });
 
+  const [connection, setConnection] = useState("");
+  const socketRef = useRef();
   useEffect(() => {
-    io.connect("http://localhost:5000");
+    socketRef.current = io.connect("http://localhost:5000");
+    setConnection(socketRef.current);
   }, []);
 
   return (
@@ -21,7 +24,7 @@ const App = () => {
       <Header />
       <Router>
         <RoomCreator path="/" />
-        <Lobby path="/:roomLobby" />
+        <Lobby path="/:roomLobby" connection={connection} />
         <Login path="/login/:roomLobby" />
         {/* <ErrorPage default status={404} msg={"Path not found"} /> */}
       </Router>

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import ErrorPage from "../Components/ErrorPage";
+//import io from "socket.io-client";
 
 const Lobby = (props) => {
   const [isCopied, setIsCopied] = useState(false);
@@ -8,7 +9,12 @@ const Lobby = (props) => {
   const { origin, pathname } = props.location;
   const link = origin + "/login" + pathname;
 
-  console.log(user);
+  console.log(props.connection);
+
+  useEffect(() => {
+    props.connection.emit("join room", "bridges");
+  }, [props.connection]);
+
   return (
     <>
       {user ? (

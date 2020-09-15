@@ -10,8 +10,19 @@ app.get("/", (req, res) => {
 // delete index.html file
 
 io.on("connection", (socket) => {
-  console.log(`Client connected ${socket.client.id}`);
+  //console.log(`Client connected ${socket.client.id}`);
   socket.on("disconnect", () => console.log("Client disconnected"));
+  socket.on("join room", (roomID) => {
+    socket.join(roomID);
+    console.log(`Client ${socket.client.id} has joined room ${roomID}`);
+  });
 });
+
+io.of("/")
+  .in("bridges")
+  .clients((err, clients) => {
+    console.log(err);
+    console.log(clients);
+  });
 
 module.exports = http;
