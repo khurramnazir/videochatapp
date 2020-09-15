@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
-import './App.css';
+import React, { useEffect, useState, useRef } from "react";
+
 // import io from "socket.io-client";
-import Peer from "simple-peer";
+//import Peer from "simple-peer";
 
 const PairVideo = () => {
   const [yourID, setYourID] = useState("");
@@ -17,13 +17,15 @@ const PairVideo = () => {
   const socket = useRef();
 
   useEffect(() => {
-    socket.current = io.connect("/");
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
-      setStream(stream);
-      if (userVideo.current) {
-        userVideo.current.srcObject = stream;
-      }
-    })
+    //socket.current = io.connect("/");
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        setStream(stream);
+        if (userVideo.current) {
+          userVideo.current.srcObject = stream;
+        }
+      });
 
     /*
     socket.current.on("yourID", (id) => {
@@ -97,51 +99,45 @@ const PairVideo = () => {
 
     peer.signal(callerSignal);
   }
+ */
 
   let UserVideo;
   if (stream) {
     UserVideo = (
-      <Video playsInline muted ref={userVideo} autoPlay />
-    );
-  }*/
-
-  let PartnerVideo;
-  if (callAccepted) {
-    PartnerVideo = (
-      <Video playsInline ref={partnerVideo} autoPlay />
+      <video className="userVideo" playsInline muted ref={userVideo} autoPlay />
     );
   }
 
-  let incomingCall;
-  if (receivingCall) {
-    incomingCall = (
-      <div>
-        <h1>{caller} is calling you</h1>
-        <button onClick={acceptCall}>Accept</button>
-      </div>
-    )
-  }
+  // let PartnerVideo;
+  // if (callAccepted) {
+  //   PartnerVideo = <Video playsInline ref={partnerVideo} autoPlay />;
+  // }
+
+  // let incomingCall;
+  // if (receivingCall) {
+  //   incomingCall = (
+  //     <div>
+  //       <h1>{caller} is calling you</h1>
+  //       <button onClick={acceptCall}>Accept</button>
+  //     </div>
+  //   );
+  // }
   return (
-    <Container>
-      <Row>
-        {UserVideo}
-        {PartnerVideo}
-      </Row>
-      <Row>
-        {Object.keys(users).map(key => {
-          if (key === yourID) {
-            return null;
-          }
-          return (
-            <button onClick={() => callPeer(key)}>Call {key}</button>
-          );
-        })}
-      </Row>
-      <Row>
-        {incomingCall}
-      </Row>
-    </Container>
+    <section>
+      {UserVideo}
+      <p className="videoUserName">charlotte</p>
+      {/* {PartnerVideo} */}
+
+      {/* {Object.keys(users).map((key) => {
+        if (key === yourID) {
+          return null;
+        }
+        return <button onClick={() => callPeer(key)}>Call {key}</button>;
+      })} */}
+
+      {/* {incomingCall} */}
+    </section>
   );
-}
+};
 
 export default PairVideo;

@@ -14,11 +14,11 @@ const App = () => {
   //io({ transports: ["websocket"], upgrade: false });
 
   const [connection, setConnection] = useState("");
-  const socketRef = useRef();
-  useEffect(() => {
-    socketRef.current = io.connect("http://localhost:5000");
-    setConnection(socketRef.current);
-  }, []);
+  //const socketRef = useRef();
+  // useEffect(() => {
+  //   socketRef.current = io.connect("http://localhost:5000");
+  //   setConnection(socketRef.current);
+  // }, []);
 
   return (
     <div className="App">

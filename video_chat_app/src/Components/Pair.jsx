@@ -1,14 +1,15 @@
-import React from 'react';
-import PairVideo from '../Components/PairVideo'
+import React from "react";
+import PairVideo from "../Components/PairVideo";
 
-const Pair = (user1, user2) => {
-    // user1 = {name:"bob", type:"user", pair:1} user1 = {name:"bob", type:"user", pair:1}
-    return (
-        <div>
-            <p>Welcome to your pairing!</p>
-            <PairVideo />
-        </div>
-    );
+const Pair = (props) => {
+  const { roomLobby, pair } = props;
+  return (
+    //validate users of correct type
+    <div>
+      <p>{`Welcome to ${pair} of ${roomLobby}!`}</p>
+      <PairVideo />
+    </div>
+  );
 };
 
 export default Pair;
