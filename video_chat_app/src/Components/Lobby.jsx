@@ -4,16 +4,22 @@ import ErrorPage from "../Components/ErrorPage";
 //import io from "socket.io-client";
 
 const Lobby = (props) => {
+  const [yourID, setYourID] = useState("");
   const [isCopied, setIsCopied] = useState(false);
   const user = props.location.state;
   const { origin, pathname } = props.location;
   const link = origin + "/login" + pathname;
-
-  console.log(props.connection);
+  const { roomLobby, connection } = props;
 
   useEffect(() => {
-    props.connection.emit("join room", "bridges");
-  }, [props.connection]);
+    connection.emit("join room", { roomLobby, username: user.name });
+    // connection.emit("myname", user.name);
+    // connection.on("yourID", (id) => {
+    //   console.log(id);
+    //   setYourID(id);
+    // });
+    // console.log(user, yourID);
+  }, []);
 
   return (
     <>
