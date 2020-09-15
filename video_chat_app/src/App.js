@@ -5,6 +5,7 @@ import { Router } from "@reach/router";
 import RoomCreator from "./Components/RoomCreator";
 import Lobby from "./Components/Lobby";
 import Login from "./Components/Login";
+import Pair from "./Components/Pair";
 // import ErrorPage from "./Components/ErrorPage";
 import io from "socket.io-client";
 import { useEffect, useRef } from "react";
@@ -26,6 +27,8 @@ const App = () => {
         <RoomCreator path="/" />
         <Lobby path="/:roomLobby" connection={connection} />
         <Login path="/login/:roomLobby" />
+        <Pair path="/:roomLobby/:pair" />
+
         {/* <ErrorPage default status={404} msg={"Path not found"} /> */}
       </Router>
     </div>
