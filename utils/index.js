@@ -1,16 +1,19 @@
 exports.pairUp = (allMembers) => {
   const pairs = [];
+  let pair = [];
   const allMembersCopy = [...allMembers];
-  const evenIndices = allMembersCopy.filter((member, index) => {
-    return index % 2 === 0;
-  });
-  const oddIndices = allMembersCopy.filter((member, index) => {
-    return index % 2 !== 0;
-  });
-
-  for (let i = 0; i < allMembersCopy.length * 0.5; i++) {
-    pairs.push([evenIndices[i], oddIndices[i]]);
+  if (allMembersCopy.length === 1){return [allMembersCopy]}
+  while (allMembersCopy.length > 0) {
+    const index = Math.floor(Math.random() * allMembersCopy.length)
+    pair.push(allMembersCopy.splice(index,1)[0])
+    if (pair.length === 2) {
+      pairs.push(pair)
+      pair = []
+    }
   }
-  console.log(pairs);
+  if (pair.length === 1){
+    const pairIndex = Math.floor(Math.random() * pairs.length)
+    pairs[pairIndex].push(pair[0])
+  }  
   return pairs;
 };
