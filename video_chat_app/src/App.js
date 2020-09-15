@@ -14,6 +14,7 @@ const App = () => {
   //io({ transports: ["websocket"], upgrade: false });
 
   const [connection, setConnection] = useState("");
+
   const socketRef = useRef();
 
   useEffect(() => {

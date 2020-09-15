@@ -1,12 +1,15 @@
-import React from "react";
+import React, {} from "react";
 import PairVideo from "../Components/PairVideo";
+import CountDown from "../Components/CountDown";
 
-const Pair = (user1, user2) => {
-  // user1 = {name:"bob", type:"user", pair:1} user1 = {name:"bob", type:"user", pair:1}
+const Pair = (props) => {
+  const { roomLobby, pair } = props;
   return (
+    //validate users of correct type
     <div>
-      <p>Welcome to your pairing!</p>
-      {/* <PairVideo /> */}
+      <p>{`Welcome to ${pair} of ${roomLobby}!`}</p>
+      <CountDown />
+      <PairVideo />
     </div>
   );
 };
