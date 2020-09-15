@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import ErrorPage from "../Components/ErrorPage";
-// import io from "socket.io-client";
 
 const Lobby = (props) => {
-  const [yourID, setYourID] = useState("");
+  const [users, setUsers] = useState([]);
   const [isCopied, setIsCopied] = useState(false);
   const user = props.location.state;
   const { origin, pathname } = props.location;
@@ -12,13 +11,15 @@ const Lobby = (props) => {
   const { roomLobby, connection } = props;
 
   useEffect(() => {
-    connection.emit("join room", { roomLobby, username: user.name });
-    // connection.emit("myname", user.name);
-    // connection.on("yourID", (id) => {
-    //   console.log(id);
-    //   setYourID(id);
-    // });
-    // console.log(user, yourID);
+    connection.emit("join room", {
+      roomLobby,
+      username: user.name,
+      type: user.type,
+    });
+
+    connection.on("usersInLobby", (usersObj) => {
+      setUsers(usersObj);
+    });
   }, []);
 
   return (
@@ -30,7 +31,13 @@ const Lobby = (props) => {
           </CopyToClipboard>
           {isCopied && <p> Link has been copied</p>}
           <br />
-          {user.name} you are in the lobby
+          {user.name} you are in the {roomLobby} lobby
+          <ul>
+            <p>userlist:</p>
+            {users.map((user) => {
+              return <li>{user.name}</li>;
+            })}
+          </ul>
           {user.type === "admin" && <button>START CHAT</button>}
         </div>
       ) : (
