@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import ErrorPage from "../Components/ErrorPage";
-//import io from "socket.io-client";
+// import io from "socket.io-client";
 
 const Lobby = (props) => {
   const [yourID, setYourID] = useState("");
