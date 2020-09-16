@@ -9,7 +9,6 @@ app.get("/", (req, res) => {
 allUsers = {};
 
 io.on("connection", (socket) => {
-  socket.emit("yourID", socket.id);
   socket.on("join room", ({ roomLobby, username, type }) => {
     socket.join(roomLobby);
     const userObject = { name: username, id: socket.client.id, type };
@@ -18,7 +17,10 @@ io.on("connection", (socket) => {
     } else {
       allUsers[roomLobby] = [userObject];
     }
-    socket.emit("usersInLobby", allUsers[roomLobby]);
+
+    io.in(roomLobby).emit("usersInLobby", allUsers[roomLobby]);
+
+    io.in(roomLobby).emit("moveToChat", "http://localhost:3000/bridges/room1");
 
     socket.on("disconnect", () => {
       const newArr = allUsers[roomLobby].filter((user) => {
