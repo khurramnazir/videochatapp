@@ -10,6 +10,7 @@ allUsers = {};
 
 io.on("connection", (socket) => {
   socket.emit("yourID", socket.id);
+  console.log(socket.id, '<<<< on connection')
   socket.on("join room", ({ roomLobby, username, type }) => {
     socket.join(roomLobby);
     const userObject = { name: username, id: socket.client.id, type };
@@ -21,6 +22,7 @@ io.on("connection", (socket) => {
     socket.emit("usersInLobby", allUsers[roomLobby]);
 
     socket.on("disconnect", () => {
+      console.log('user disconnected')
       const newArr = allUsers[roomLobby].filter((user) => {
         return user.id !== socket.client.id;
       });
