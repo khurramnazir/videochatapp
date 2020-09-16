@@ -9,6 +9,7 @@ app.get("/", (req, res) => {
 allUsers = {};
 
 io.on("connection", (socket) => {
+
   socket.on("join room", ({ roomLobby, username, type }) => {
     socket.join(roomLobby);
     const userObject = { name: username, id: socket.client.id, type };
@@ -23,6 +24,7 @@ io.on("connection", (socket) => {
     io.in(roomLobby).emit("moveToChat", "http://localhost:3000/bridges/room1");
 
     socket.on("disconnect", () => {
+      console.log('user disconnected')
       const newArr = allUsers[roomLobby].filter((user) => {
         return user.id !== socket.client.id;
       });

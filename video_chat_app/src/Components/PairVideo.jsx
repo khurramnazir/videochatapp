@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 // import io from "socket.io-client";
 //import Peer from "simple-peer";
 
-const PairVideo = () => {
+const PairVideo = (props) => {
   const [yourID, setYourID] = useState("");
   const [users, setUsers] = useState({});
   const [stream, setStream] = useState();
@@ -15,6 +15,8 @@ const PairVideo = () => {
   const userVideo = useRef();
   const partnerVideo = useRef();
   const socket = useRef();
+
+  const {showPartner} = props
 
   useEffect(() => {
     //socket.current = io.connect("/");
@@ -126,6 +128,7 @@ const PairVideo = () => {
     <section>
       {UserVideo}
       <p className="videoUserName">charlotte</p>
+      {showPartner && <p>Partner Video is here</p>}
       {/* {PartnerVideo} */}
 
       {/* {Object.keys(users).map((key) => {
