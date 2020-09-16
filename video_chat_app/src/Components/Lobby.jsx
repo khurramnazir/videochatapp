@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import ErrorPage from "../Components/ErrorPage";
+import { navigate } from "@reach/router";
+import io from "socket.io-client";
 
 const Lobby = (props) => {
   const [users, setUsers] = useState([]);
@@ -22,6 +24,12 @@ const Lobby = (props) => {
     });
   }, []);
 
+  const handleClick = () => {
+    connection.on("moveToChat", (newURL) => {
+      window.location = newURL
+    });
+  };
+
   return (
     <>
       {user ? (
@@ -38,7 +46,9 @@ const Lobby = (props) => {
               return <li>{user.name}</li>;
             })}
           </ul>
-          {user.type === "admin" && <button>START CHAT</button>}
+          {user.type === "admin" && (
+            <button onClick={handleClick}>START CHAT</button>
+          )}
         </div>
       ) : (
         <ErrorPage msg={"incorrect login procedure/URL"} status={"404"} />
