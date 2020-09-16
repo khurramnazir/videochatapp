@@ -29,7 +29,7 @@ const App = () => {
         <RoomCreator path="/" />
         <Lobby path="/:roomLobby" connection={connection} />
         <Login path="/login/:roomLobby" />
-        {/* <Pair path="/:roomLobby/:pair" /> */}
+        <Pair path="/:roomLobby/:pair" />
 
         {/* <ErrorPage default status={404} msg={"Path not found"} /> */}
       </Router>
