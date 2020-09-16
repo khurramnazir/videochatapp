@@ -66,7 +66,7 @@ const Lobby = (props) => {
           <ul>
             <p>userlist:</p>
             {users.map((user) => {
-              return <li>{user.name}</li>;
+              return <li key={user.name}>{user.name}</li>;
             })}
           </ul>
           {user.type === "admin" && (

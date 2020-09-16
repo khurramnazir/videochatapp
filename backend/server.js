@@ -38,6 +38,10 @@ io.on("connection", (socket) => {
     const pairs = pairUp(allUsers[roomLobby]);
     io.in(roomLobby).emit("getAllPairs", pairs);
   });
+
+  socket.on("join pair", ({ pair, roomLobby, stream }) => {
+    socket.join(roomLobby + pair);
+  });
 });
 
 module.exports = http;

@@ -16,7 +16,7 @@ const PairVideo = (props) => {
   const partnerVideo = useRef();
   const socket = useRef();
 
-  const {showPartner} = props
+  const { showPartner, connection, roomLobby, pair } = props;
 
   useEffect(() => {
     //socket.current = io.connect("/");
@@ -28,6 +28,7 @@ const PairVideo = (props) => {
           userVideo.current.srcObject = stream;
         }
       });
+    connection.emit("join pair", { pair, roomLobby, stream });
 
     /*
     socket.current.on("yourID", (id) => {
@@ -129,6 +130,7 @@ const PairVideo = (props) => {
       {UserVideo}
       <p className="videoUserName">charlotte</p>
       {showPartner && <p>Partner Video is here</p>}
+
       {/* {PartnerVideo} */}
 
       {/* {Object.keys(users).map((key) => {
@@ -144,4 +146,3 @@ const PairVideo = (props) => {
 };
 
 export default PairVideo;
-
