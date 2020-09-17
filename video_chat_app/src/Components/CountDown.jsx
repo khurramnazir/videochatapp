@@ -1,24 +1,22 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 
+const CountDown = ({ updateShowPartner }) => {
+  let [timeLeft, setTimeLeft] = useState(10);
 
-const CountDown = ({updateShowPartner}) => {
-    let [timeLeft, setTimeLeft] = useState(10);
-    
-    const take1Second = () => {
-        {setTimeLeft(timeLeft-1)}
+  const take1Second = () => {
+    setTimeLeft(timeLeft - 1);
+  };
+
+  useEffect(() => {
+    if (timeLeft > 0) {
+      setTimeout(take1Second, 1000);
     }
-    
-    useEffect(()=>{
-        if (timeLeft>0){setTimeout(take1Second, 1000)}
-        if (timeLeft===0){updateShowPartner()}
-    },[timeLeft])
+    if (timeLeft === 0) {
+      updateShowPartner();
+    }
+  }, [timeLeft, take1Second, updateShowPartner]);
 
-    return (
-        <div>
-            {timeLeft>0 && <p>{timeLeft}</p>}
-        </div>
-    );
-
+  return <div>{timeLeft > 0 && <p>{timeLeft}</p>}</div>;
 };
 
 export default CountDown;

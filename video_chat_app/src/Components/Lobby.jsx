@@ -6,6 +6,8 @@ import io from "socket.io-client";
 
 const Lobby = (props) => {
   const [users, setUsers] = useState([]);
+  const [URL, setURL] = useState(null);
+  const [move, setMove] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const user = props.location.state;
   const { origin, pathname } = props.location;
@@ -13,6 +15,7 @@ const Lobby = (props) => {
   const { roomLobby, connection } = props;
 
   useEffect(() => {
+    // if(connection !== "")
     connection.emit("join room", {
       roomLobby,
       username: user.name,
@@ -22,13 +25,33 @@ const Lobby = (props) => {
     connection.on("usersInLobby", (usersObj) => {
       setUsers(usersObj);
     });
+
+    connection.on("getAllPairs", (pairs) => {
+      let index;
+
+      pairs.forEach((pair, i) => {
+        const isPair = pair.filter((person) => {
+          return person.name === user.name;
+        });
+
+        console.log(isPair, "<<<is pair result");
+
+        if (isPair.length === 1) index = i + 1;
+      });
+
+      const url = origin + pathname + `/room${index}`;
+
+      setURL(url);
+    });
   }, []);
 
   const handleClick = () => {
-    connection.on("moveToChat", (newURL) => {
-      window.location = newURL
+    connection.emit("move room", {
+      roomLobby,
     });
   };
+
+  if (URL !== null) navigate(URL);
 
   return (
     <>
@@ -43,7 +66,7 @@ const Lobby = (props) => {
           <ul>
             <p>userlist:</p>
             {users.map((user) => {
-              return <li>{user.name}</li>;
+              return <li key={user.name}>{user.name}</li>;
             })}
           </ul>
           {user.type === "admin" && (
