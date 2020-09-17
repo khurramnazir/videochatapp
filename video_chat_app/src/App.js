@@ -18,7 +18,7 @@ const App = () => {
   const socketRef = useRef();
 
   useEffect(() => {
-    socketRef.current = io.connect("http://localhost:5000");
+    socketRef.current = io.connect("/");
     setConnection(socketRef.current);
   }, []);
 

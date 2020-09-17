@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import PairVideo from "../Components/PairVideo";
+import React, { useState } from "react";
+import Video from "../Components/Video";
 import CountDown from "../Components/CountDown";
 
 const Pair = (props) => {
@@ -25,7 +25,7 @@ const Pair = (props) => {
     <div>
       <p>{`Welcome to ${pair} of ${roomLobby}!`}</p>
       <CountDown updateShowPartner={updateShowPartner} />
-      <PairVideo
+      <Video
         showPartner={showPartner}
         connection={connection}
         roomLobby={roomLobby}

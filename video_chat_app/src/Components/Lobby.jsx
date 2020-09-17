@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import ErrorPage from "../Components/ErrorPage";
 import { navigate } from "@reach/router";
-import io from "socket.io-client";
 
 const Lobby = (props) => {
   const [users, setUsers] = useState([]);
   const [URL, setURL] = useState(null);
-  const [move, setMove] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const user = props.location.state;
   const { origin, pathname } = props.location;
