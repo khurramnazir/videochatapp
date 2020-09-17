@@ -14,5 +14,5 @@ if (process.env.PROD) {
 const PORT = process.env.PORT || 5000;
 
 http.listen(PORT, function () {
-  console.log(`listening on the port ${PORT}`);
+  console.log(`listening on port ${PORT}`);
 });
