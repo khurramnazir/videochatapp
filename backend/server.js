@@ -1,6 +1,6 @@
-var app = require("express")();
-var http = require("http").createServer(app);
-var io = require("socket.io")(http);
+const app = require("express")();
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
 
 const { pairUp } = require("../utils/index");
 
@@ -71,3 +71,4 @@ io.on("connection", (socket) => {
 });
 
 module.exports = http;
+module.exports = app;
