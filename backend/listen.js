@@ -5,9 +5,9 @@ require("dotenv").config();
 const express = require("express");
 
 if (process.env.PROD) {
-  app.use(express.static(path.join(__dirname, "/../video_chat_app/build")));
-  app.get("/*", (req, res) => {
-    res.sendFile(path.join(__dirname, "/../video_chat_app/build/index.html"));
+  app.use(express.static(path.join(__dirname, "../video_chat_app/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../video_chat_app/build/index.html"));
   });
 }
 
