@@ -1,11 +1,12 @@
 var app = require("express")();
-var http = require("http").Server(app);
+var http = require("http").createServer(app);
 var io = require("socket.io")(http);
+
 const { pairUp } = require("../utils/index");
 
-app.get("/", (req, res) => {
-  res.send({ response: "I am alive" }).status(200);
-});
+// app.get("/", (req, res) => {
+//   res.send({ response: "I am alive" }).status(200);
+// });
 
 allUsers = {};
 
@@ -39,8 +40,33 @@ io.on("connection", (socket) => {
     io.in(roomLobby).emit("getAllPairs", pairs);
   });
 
-  socket.on("join pair", ({ pair, roomLobby, stream }) => {
+  socket.on("join pair", ({ pair, roomLobby }) => {
     socket.join(roomLobby + pair);
+  });
+
+  socket.on("getAllOtherUsers", ({ pair, roomLobby }) => {
+    io.in(roomLobby + pair).clients((err, clients) => {
+      const myid = socket.client.id;
+
+      const user = clients.filter((id) => {
+        return id !== myid;
+      });
+
+      io.in(roomLobby + pair).emit("all other users", user);
+    });
+  });
+
+  socket.on("sending signal", (payload) => {
+    io.to(payload.userToSignal).emit("user joined", {
+      signal: payload.signal,
+      callerID: payload.callerID,
+    });
+  });
+  socket.on("returning signal", (payload) => {
+    io.to(payload.callerID).emit("receiving returned signal", {
+      signal: payload.signal,
+      id: socket.id,
+    });
   });
 });
 

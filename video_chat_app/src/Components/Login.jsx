@@ -6,8 +6,6 @@ const Login = (props) => {
   const { roomLobby } = props;
   const { origin } = props.location;
 
-  console.log(props);
-
   const handleSubmit = (submitEvent) => {
     submitEvent.preventDefault();
 

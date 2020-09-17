@@ -14,7 +14,7 @@ const CountDown = ({ updateShowPartner }) => {
     if (timeLeft === 0) {
       updateShowPartner();
     }
-  }, [timeLeft, take1Second, updateShowPartner]);
+  });
 
   return <div>{timeLeft > 0 && <p>{timeLeft}</p>}</div>;
 };

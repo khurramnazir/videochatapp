@@ -25,6 +25,13 @@
   z-index: 0;
 }
 
+.partnerVideo {
+  width: 350px;
+  border: solid 2px red;
+  position: relative;
+  z-index: 0;
+}
+
 .videoUserName {
   position: absolute;
   top: 50%;
