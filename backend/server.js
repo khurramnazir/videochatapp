@@ -4,10 +4,6 @@ const io = require("socket.io")(http);
 
 const { pairUp } = require("../utils/index");
 
-// app.get("/", (req, res) => {
-//   res.send({ response: "I am alive" }).status(200);
-// });
-
 allUsers = {};
 
 io.on("connection", (socket) => {
