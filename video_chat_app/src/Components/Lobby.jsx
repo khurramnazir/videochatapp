@@ -24,6 +24,8 @@ const Lobby = (props) => {
   const link = origin + "/login" + pathname;
   const { roomLobby, connection } = props;
   const classes = useStyles();
+  const [indexInPair, setIndexInPair] = useState(null);
+
 
   useEffect(() => {
     // if(connection !== "")
@@ -40,7 +42,10 @@ const Lobby = (props) => {
     connection.on("getAllPairs", (pairs) => {
       let index;
       pairs.forEach((pair, i) => {
-        const isPair = pair.filter((person) => {
+        const isPair = pair.filter((person, i) => {
+          if (person.name === user.name) {
+            setIndexInPair(i);
+          }
           return person.name === user.name;
         });
         if (isPair.length === 1) index = i + 1;
@@ -56,7 +61,17 @@ const Lobby = (props) => {
     });
   };
 
-  if (URL !== null) navigate(URL);
+  if (URL !== null && indexInPair === 0) navigate(URL);
+  if (URL !== null && indexInPair === 1) {
+    setTimeout(function () {
+      navigate(URL);
+    }, 500);
+  }
+  if (URL !== null && indexInPair === 2) {
+    setTimeout(function () {
+      navigate(URL);
+    }, 1000);
+  }
 
   return (
     <Container component="main" maxWidth="sm">
