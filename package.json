@@ -6,8 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=production node ./backend/listen.js",
+    "startdev": "nodemon node ./backend/listen.js",
     "client": "npm run start --prefix ./video_chat_app",
-    "dev": "concurrently \"npm run dev\" \"npm run client\"",
+    "dev": "concurrently \"npm run startdev\" \"npm run client\"",
     "postinstall": "cd ./video_chat_app && npm i"
   },
   "repository": {

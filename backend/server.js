@@ -66,5 +66,4 @@ io.on("connection", (socket) => {
   });
 });
 
-module.exports = http;
-module.exports = app;
+module.exports = { http, app };
