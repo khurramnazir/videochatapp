@@ -26,7 +26,7 @@ const Room = (props) => {
   const userVideo = useRef();
   const peersRef = useRef([]);
 
-  const { showPartner, connection, roomLobby, pair } = props;
+  const { connection, roomLobby, pair } = props;
 
   useEffect(() => {
     connection.emit("join pair", { pair, roomLobby });
@@ -38,8 +38,6 @@ const Room = (props) => {
         connection.emit("getAllOtherUsers", { pair, roomLobby });
 
         connection.on("all other users", (users) => {
-          console.log(connection.id, "<--- my ID");
-          console.log(users, "<---Received ID");
           const peers = [];
           users.forEach((userID) => {
             const peer = createPeer(userID, connection.id, stream);
@@ -56,7 +54,6 @@ const Room = (props) => {
         });
 
         connection.on("user joined", (payload) => {
-          console.log(payload, "<--- user joined");
           const item = peersRef.current.find(
             (p) => p.peerID === payload.callerID
           );
@@ -111,7 +108,6 @@ const Room = (props) => {
   return (
     <section>
       <StyledVideo muted ref={userVideo} autoPlay playsInline />
-      {console.log(peers)}
       {peers.map((peer, index) => {
         return <Video key={index} peer={peer} />;
       })}
