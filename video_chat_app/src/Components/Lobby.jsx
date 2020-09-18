@@ -51,12 +51,12 @@ const Lobby = (props) => {
   if (URL !== null && indexInPair === 1) {
     setTimeout(function () {
       navigate(URL);
-    }, 500);
+    }, 10);
   }
   if (URL !== null && indexInPair === 2) {
     setTimeout(function () {
       navigate(URL);
-    }, 1000);
+    }, 20);
   }
 
   return (
