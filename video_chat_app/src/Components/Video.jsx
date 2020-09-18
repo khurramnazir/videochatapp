@@ -114,8 +114,8 @@ const Room = (props) => {
       {setTimeout(function () {
         peers.map((peer, index) => {
           return <Video key={index} peer={peer} />;
-        }, 10000);
-      })}
+        });
+      }, 10000)}
     </section>
   );
 };
