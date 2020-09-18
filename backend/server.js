@@ -45,10 +45,10 @@ io.on("connection", (socket) => {
       const myid = socket.client.id;
 
       const user = clients.filter((id) => {
-        return id !== myid;
+        return id === myid;
       });
 
-      io.in(roomLobby + pair).emit("all other users", user);
+      socket.to(roomLobby + pair).emit("all other users", user);
     });
   });
 
