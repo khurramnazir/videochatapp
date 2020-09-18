@@ -1,10 +1,19 @@
 import React, { useState } from "react";
 import { navigate } from "@reach/router";
+import {
+  Button,
+  Input,
+  Container,
+  CssBaseline,
+  Typography,
+} from "@material-ui/core";
+import useStyles from "../styling/styles";
 
 const Login = (props) => {
   const [name, setName] = useState("");
   const { roomLobby } = props;
   const { origin } = props.location;
+  const classes = useStyles();
 
   const handleSubmit = (submitEvent) => {
     submitEvent.preventDefault();
@@ -16,22 +25,28 @@ const Login = (props) => {
   };
 
   return (
-    <>
-      <p>Welcome! Please enter your username to join the lobby</p>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          placeholder="Your Name"
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
-          required
-        ></input>
-        <button type="submit">Join Lobby</button>
-      </form>
-    </>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Typography variant="h5">{`Welcome! Please enter a username to join the ${roomLobby} group`}</Typography>
+        <form onSubmit={handleSubmit} className={classes.form}>
+          <Input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Your Name"
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+            required
+            autoFocus
+          ></Input>
+          <Button type="submit" color="primary" className={classes.button}>
+            Join Lobby
+          </Button>
+        </form>
+      </div>
+    </Container>
   );
 };
 
