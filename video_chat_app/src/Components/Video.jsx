@@ -110,12 +110,9 @@ const Room = (props) => {
   return (
     <section>
       <StyledVideo muted ref={userVideo} autoPlay playsInline />
-      {setTimeout(function () {
-        const newArr = peers.map((peer, index) => {
-          return <Video key={index} peer={peer} />;
-        });
-        return newArr;
-      }, 10000)}
+      {peers.map((peer, index) => {
+        return <Video key={index} peer={peer} />;
+      })}
     </section>
   );
 };
