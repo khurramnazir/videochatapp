@@ -56,7 +56,6 @@ const Room = (props) => {
         });
 
         connection.on("user joined", (payload) => {
-          console.log(payload, "<--- user joined");
           const item = peersRef.current.find(
             (p) => p.peerID === payload.callerID
           );
@@ -112,9 +111,10 @@ const Room = (props) => {
     <section>
       <StyledVideo muted ref={userVideo} autoPlay playsInline />
       {setTimeout(function () {
-        peers.map((peer, index) => {
+        const newArr = peers.map((peer, index) => {
           return <Video key={index} peer={peer} />;
         });
+        return newArr;
       }, 10000)}
     </section>
   );
