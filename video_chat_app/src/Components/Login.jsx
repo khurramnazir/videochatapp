@@ -32,8 +32,6 @@ const Login = (props) => {
 
   const handleSubmit = (submitEvent) => {
     submitEvent.preventDefault();
-    console.log(users);
-
     const existingUser = users.filter((user) => {
       return user.name === name;
     });
@@ -48,13 +46,24 @@ const Login = (props) => {
     }
   };
 
+  const userInLobby = users.filter((user) => {
+    return user.id === connection.id;
+  });
+  if (userInLobby.length > 0) {
+    connection.emit("leave lobby", roomLobby);
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Typography variant="h5">{`Welcome! Please enter a username to join the ${
-          roomLobby.split("=")[0]
-        } group`}</Typography>
+        <Typography variant="h5">
+          {userInLobby.length === 0
+            ? `Welcome! Please enter a username to join the ${
+                roomLobby.split("=")[0]
+              } group`
+            : "please login again..."}
+        </Typography>
         <form onSubmit={handleSubmit} className={classes.form}>
           <Input
             type="text"

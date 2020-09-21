@@ -69,6 +69,17 @@ io.on("connection", (socket) => {
       id: socket.id,
     });
   });
+
+  socket.on("leave lobby", (roomLobby) => {
+    socket.leave(roomLobby);
+    // let indexOfUser;
+    // allUsers[roomLobby].forEach((user, index) => {
+    //   if (user.id === socket.client.id) {
+    //     indexOfUser = index;
+    //   }
+    // });
+    // allUsers[roomLobby].splice(indexOfUser, 1);
+  });
 });
 
 module.exports = { http, app };

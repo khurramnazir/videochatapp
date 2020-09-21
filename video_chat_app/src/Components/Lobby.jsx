@@ -19,7 +19,7 @@ const Lobby = (props) => {
   const [users, setUsers] = useState([]);
   const [URL, setURL] = useState(null);
   const [isCopied, setIsCopied] = useState(false);
-  const user = props.location.state;
+  let user = props.location.state;
   const { origin, pathname } = props.location;
   const link = origin + "/login" + pathname;
   const { roomLobby, connection } = props;
@@ -27,31 +27,34 @@ const Lobby = (props) => {
   const [indexInPair, setIndexInPair] = useState(null);
 
   useEffect(() => {
-    // if(connection !== "")
-    connection.emit("join room", {
-      roomLobby,
-      username: user.name,
-      type: user.type,
-    });
-
-    connection.on("usersInLobby", (usersObj) => {
-      setUsers(usersObj);
-    });
-
-    connection.on("getAllPairs", (pairs) => {
-      let index;
-      pairs.forEach((pair, i) => {
-        const isPair = pair.filter((person, i) => {
-          if (person.name === user.name) {
-            setIndexInPair(i);
-          }
-          return person.name === user.name;
-        });
-        if (isPair.length === 1) index = i + 1;
+    if (connection === "") {
+      user = false;
+    } else {
+      connection.emit("join room", {
+        roomLobby,
+        username: user.name,
+        type: user.type,
       });
-      const url = origin + pathname + `/room${index}`;
-      setURL(url);
-    });
+
+      connection.on("usersInLobby", (usersObj) => {
+        setUsers(usersObj);
+      });
+
+      connection.on("getAllPairs", (pairs) => {
+        let index;
+        pairs.forEach((pair, i) => {
+          const isPair = pair.filter((person, i) => {
+            if (person.name === user.name) {
+              setIndexInPair(i);
+            }
+            return person.name === user.name;
+          });
+          if (isPair.length === 1) index = i + 1;
+        });
+        const url = origin + pathname + `/room${index}`;
+        setURL(url);
+      });
+    }
   }, []);
 
   const handleClick = () => {
@@ -81,20 +84,26 @@ const Lobby = (props) => {
             Hello {user.name}! You are now in the {roomLobby.split("=")[0]}{" "}
             lobby
           </Typography>
-          <CopyToClipboard text={link} onCopy={() => setIsCopied(true)}>
-            <Button
-              variant="outlined"
-              color="primary"
-              className={classes.button}
-            >
-              Copy link to clipboard
-            </Button>
-          </CopyToClipboard>
-          {isCopied && (
-            <Typography variant="h7"> Link has been copied</Typography>
+
+          {user.type === "admin" && (
+            <CopyToClipboard text={link} onCopy={() => setIsCopied(true)}>
+              <Button
+                variant="outlined"
+                color="primary"
+                className={classes.button}
+              >
+                Copy link to clipboard
+              </Button>
+            </CopyToClipboard>
           )}
+          {isCopied && (
+            <Typography variant="caption"> Link has been copied</Typography>
+          )}
+
           <br />
-          <Typography variant="h6">Lobby participants:</Typography>
+          <Typography variant="h6">
+            {`Lobby participants: ${users.length}`}{" "}
+          </Typography>
           {users.map((user) => {
             return (
               <Box key={user.name}>
