@@ -66,15 +66,17 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("sendQuestion", ({ pair, roomLobby , triv}) => {
-    console.log(triv)
+  socket.on("sendQuestion", ({ pair, roomLobby, triv }) => {
     socket.to(roomLobby + pair).emit("recievedQuestion", triv);
   });
 
-  socket.on("sendAns", ({ pair, roomLobby , ans}) => {
-      socket.to(roomLobby + pair).emit("recievedAnswer", ans);
+  socket.on("ansSubmitted", ({ pair, roomLobby, isSubmitted }) => {
+    socket.to(roomLobby + pair).emit("recievedSubmitted", isSubmitted);
   });
 
+  socket.on("sendAns", ({ pair, roomLobby, ans }) => {
+    socket.to(roomLobby + pair).emit("recievedAnswer", ans);
+  });
 });
 
 module.exports = { http, app };
