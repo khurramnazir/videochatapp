@@ -35,7 +35,7 @@ const App = () => {
 
         {/* <ErrorPage default status={404} msg={"Path not found"} /> */}
       </Router>
-      <Trivia /> {/* this should go in the 'pair' component*/}
+      {/* <Trivia /> this should go in the 'pair' component */}
     </div>
   );
 };

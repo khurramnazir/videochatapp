@@ -97,8 +97,8 @@ const Lobby = (props) => {
           <Typography variant="h6">Lobby participants:</Typography>
           {users.map((user) => {
             return (
-              <Box>
-                <ListItem key={user.name} alignItems="center">
+              <Box key={user.name}>
+                <ListItem alignItems="center">
                   <ListItemAvatar>
                     <FaceIcon color="primary" className={classes.avatar} />
                   </ListItemAvatar>

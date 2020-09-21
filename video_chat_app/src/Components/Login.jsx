@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { navigate } from "@reach/router";
 import {
   Button,
@@ -16,11 +16,27 @@ const Login = (props) => {
   const { origin } = props.location;
   const classes = useStyles();
 
-  const handleSubmit = (submitEvent) => {
-    submitEvent.preventDefault();
+  useEffect(() => {
+    console.log(connection, "<---- connection");
+    const abortController = new AbortController();
+    if (connection !== "") {
+      connection.emit("checkUsernames", {
+        roomLobby,
+        signal: abortController.signal,
+      });
+    }
 
-    connection.emit("checkUsernames", roomLobby);
-    connection.on("usersInLobby", (usersObj) => {
+    // return () => {
+    //   abortController.abort();
+    //};
+  }, [name]);
+
+  connection.on("usersInLobby", (usersObj) => {
+    const handleSubmit = (submitEvent) => {
+      submitEvent.preventDefault();
+      console.log(connection, "<--- connection from submit handler");
+
+      console.log("inside the usersInLobby handler...");
       const existingUser = usersObj.filter((user) => {
         return user.name === name;
       });
@@ -31,10 +47,8 @@ const Login = (props) => {
       } else {
         setInvalidUser(true);
       }
-    });
-
-    // const socket = io.connect("http://localhost:5000");
-  };
+    };
+  });
 
   return (
     <Container component="main" maxWidth="xs">
