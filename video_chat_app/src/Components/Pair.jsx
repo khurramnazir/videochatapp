@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import Video from "../Components/Video";
 import CountDown from "../Components/CountDown";
+import Video from "../Components/Video";
+// import Trivia from "../Components/Trivia";
 
 const Pair = (props) => {
   const { roomLobby, pair, connection } = props;
@@ -31,6 +32,7 @@ const Pair = (props) => {
         roomLobby={roomLobby}
         pair={pair}
       />
+      {/* <Trivia /> */}
     </div>
   );
 };
