@@ -58,12 +58,23 @@ io.on("connection", (socket) => {
       callerID: payload.callerID,
     });
   });
+
   socket.on("returning signal", (payload) => {
     io.to(payload.callerID).emit("receiving returned signal", {
       signal: payload.signal,
       id: socket.id,
     });
   });
+
+  socket.on("sendQuestion", ({ pair, roomLobby , triv}) => {
+    console.log(triv)
+    socket.to(roomLobby + pair).emit("recievedQuestion", triv);
+  });
+
+  socket.on("sendAns", ({ pair, roomLobby , ans}) => {
+      socket.to(roomLobby + pair).emit("recievedAnswer", ans);
+  });
+
 });
 
 module.exports = { http, app };

@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 //import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled from "styled-components";
+import Trivia from "../Components/Trivia";
+
 
 const StyledVideo = styled.video`
   height: 40%;
@@ -111,6 +113,7 @@ const Room = (props) => {
       {peers.map((peer, index) => {
         return <Video key={index} peer={peer} />;
       })}
+      <Trivia connection={connection} pair={pair} roomLobby={roomLobby}/> 
     </section>
   );
 };

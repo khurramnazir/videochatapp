@@ -12,15 +12,6 @@ const Pair = (props) => {
     setShowPartner(true);
   };
 
-  // useEffect(() => {
-  //   // if(connection !== "")
-  //   connection.emit("join pair", { pair, roomLobby });
-
-  //   connection.on("joined pair room", (message) => {
-  //     console.log(message);
-  //   });
-  // }, []);
-
   return (
     //validate users of correct type
     <div>
@@ -32,7 +23,8 @@ const Pair = (props) => {
         roomLobby={roomLobby}
         pair={pair}
       />
-      {/* <Trivia /> */}
+      {/* <Trivia connection={connection} pair={pair} roomLobby={roomLobby}/>  */}
+
     </div>
   );
 };
