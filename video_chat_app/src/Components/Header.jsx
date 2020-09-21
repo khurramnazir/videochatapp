@@ -1,11 +1,12 @@
-import React from 'react';
+import React from "react";
+import Typography from "@material-ui/core/Typography";
 
 const Header = () => {
-    return (
-        <h1>
-            Video Chat
-        </h1>
-    );
+  return (
+    <Typography variant="h1" color="primary">
+      Video Chat
+    </Typography>
+  );
 };
 
 export default Header;
