@@ -10,7 +10,7 @@ io.on("connection", (socket) => {
   console.log(`user ${socket.client.id} connected`);
 
   socket.on("checkUsernames", (roomLobby) => {
-    console.log("in the check usernames");
+    console.log(allUsers);
     socket.emit("usersInLobby", allUsers[roomLobby]);
   });
 

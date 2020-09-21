@@ -11,44 +11,42 @@ import useStyles from "../styling/styles";
 
 const Login = (props) => {
   const [name, setName] = useState("");
-  const [isInvalidUser, setInvalidUser] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [isInvalidUser, setInvalidUser] = useState(null);
   const { roomLobby, connection } = props;
   const { origin } = props.location;
   const classes = useStyles();
 
   useEffect(() => {
-    console.log(connection, "<---- connection");
-    const abortController = new AbortController();
-    if (connection !== "") {
-      connection.emit("checkUsernames", {
-        roomLobby,
-        signal: abortController.signal,
+    let mounted = true;
+    if (mounted && connection !== "") {
+      connection.emit("checkUsernames", roomLobby);
+      connection.on("usersInLobby", (usersObj) => {
+        setUsers(usersObj);
       });
     }
-
-    // return () => {
-    //   abortController.abort();
-    //};
+    return function cleanup() {
+      mounted = false;
+    };
   }, [name]);
 
-  connection.on("usersInLobby", (usersObj) => {
-    const handleSubmit = (submitEvent) => {
-      submitEvent.preventDefault();
-      console.log(connection, "<--- connection from submit handler");
+  const handleSubmit = (submitEvent) => {
+    submitEvent.preventDefault();
+    console.log(users);
 
-      console.log("inside the usersInLobby handler...");
-      const existingUser = usersObj.filter((user) => {
-        return user.name === name;
+    const existingUser = users.filter((user) => {
+      return user.name === name;
+    });
+    if (existingUser.length === 0) {
+      navigate(`${origin}/${roomLobby}`, {
+        state: { name, type: "user" },
       });
-      if (existingUser.length === 0) {
-        navigate(`${origin}/${roomLobby}`, {
-          state: { name, type: "user" },
-        });
-      } else {
-        setInvalidUser(true);
-      }
-    };
-  });
+      setInvalidUser(false);
+    } else {
+      console.log("in the else");
+      setInvalidUser(true);
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
