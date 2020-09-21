@@ -9,6 +9,11 @@ allUsers = {};
 io.on("connection", (socket) => {
   console.log(`user ${socket.client.id} connected`);
 
+  socket.on("checkUsernames", (roomLobby) => {
+    console.log("in the check usernames");
+    socket.emit("usersInLobby", allUsers[roomLobby]);
+  });
+
   socket.on("join room", ({ roomLobby, username, type }) => {
     socket.join(roomLobby);
     const userObject = { name: username, id: socket.client.id, type };

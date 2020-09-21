@@ -24,7 +24,7 @@ const Pair = (props) => {
   return (
     //validate users of correct type
     <div>
-      <p>{`Welcome to ${pair} of ${roomLobby}!`}</p>
+      <p>{`Welcome to ${pair} of ${roomLobby.split("=")[0]}!`}</p>
       <CountDown updateShowPartner={updateShowPartner} />
       <Video
         showPartner={showPartner}

@@ -8,6 +8,7 @@ import {
   Container,
 } from "@material-ui/core";
 import useStyles from "../styling/styles";
+import { v1 as uuid } from "uuid";
 
 const RoomCreator = () => {
   const [name, setName] = useState("");
@@ -16,11 +17,13 @@ const RoomCreator = () => {
 
   const handleSubmit = (submitEvent) => {
     submitEvent.preventDefault();
-    navigate(`/${roomName}`, {
+    navigate(`/${roomName}=${uuid()}`, {
       state: { name, type: "admin" },
     });
     // const socket = io.connect("http://localhost:5000");
   };
+
+  console.log(uuid());
 
   return (
     <Container component="main" maxWidth="xs">

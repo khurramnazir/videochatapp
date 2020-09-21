@@ -11,16 +11,28 @@ import useStyles from "../styling/styles";
 
 const Login = (props) => {
   const [name, setName] = useState("");
-  const { roomLobby } = props;
+  const [isInvalidUser, setInvalidUser] = useState(false);
+  const { roomLobby, connection } = props;
   const { origin } = props.location;
   const classes = useStyles();
 
   const handleSubmit = (submitEvent) => {
     submitEvent.preventDefault();
 
-    navigate(`${origin}/${roomLobby}`, {
-      state: { name, type: "user" },
+    connection.emit("checkUsernames", roomLobby);
+    connection.on("usersInLobby", (usersObj) => {
+      const existingUser = usersObj.filter((user) => {
+        return user.name === name;
+      });
+      if (existingUser.length === 0) {
+        navigate(`${origin}/${roomLobby}`, {
+          state: { name, type: "user" },
+        });
+      } else {
+        setInvalidUser(true);
+      }
     });
+
     // const socket = io.connect("http://localhost:5000");
   };
 
@@ -28,7 +40,9 @@ const Login = (props) => {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Typography variant="h5">{`Welcome! Please enter a username to join the ${roomLobby} group`}</Typography>
+        <Typography variant="h5">{`Welcome! Please enter a username to join the ${
+          roomLobby.split("=")[0]
+        } group`}</Typography>
         <form onSubmit={handleSubmit} className={classes.form}>
           <Input
             type="text"
@@ -45,6 +59,7 @@ const Login = (props) => {
             Join Lobby
           </Button>
         </form>
+        {isInvalidUser && <p>Choose another username</p>}
       </div>
     </Container>
   );

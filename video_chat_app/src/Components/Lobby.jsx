@@ -26,7 +26,6 @@ const Lobby = (props) => {
   const classes = useStyles();
   const [indexInPair, setIndexInPair] = useState(null);
 
-
   useEffect(() => {
     // if(connection !== "")
     connection.emit("join room", {
@@ -79,7 +78,8 @@ const Lobby = (props) => {
       {user ? (
         <div className={classes.paper}>
           <Typography variant="h5">
-            Hello {user.name}! You are now in the {roomLobby} lobby
+            Hello {user.name}! You are now in the {roomLobby.split("=")[0]}{" "}
+            lobby
           </Typography>
           <CopyToClipboard text={link} onCopy={() => setIsCopied(true)}>
             <Button

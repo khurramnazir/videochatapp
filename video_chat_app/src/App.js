@@ -30,7 +30,7 @@ const App = () => {
       <Router>
         <RoomCreator path="/" />
         <Lobby path="/:roomLobby" connection={connection} />
-        <Login path="/login/:roomLobby" />
+        <Login path="/login/:roomLobby" connection={connection} />
         <Pair path="/:roomLobby/:pair" connection={connection} />
 
         {/* <ErrorPage default status={404} msg={"Path not found"} /> */}
@@ -41,3 +41,6 @@ const App = () => {
 };
 
 export default App;
+
+//"postinstall": "npm run build" for APP
+// "postinstall": "cd ./video_chat_app && npm i"
