@@ -11,6 +11,7 @@ import {
   CssBaseline,
   Box,
   Typography,
+  Avatar,
 } from "@material-ui/core";
 import FaceIcon from "@material-ui/icons/Face";
 import useStyles from "../styling/styles";
@@ -27,9 +28,11 @@ const Lobby = (props) => {
   const [indexInPair, setIndexInPair] = useState(null);
 
   useEffect(() => {
+    let mounted = true;
     if (connection === "") {
       user = false;
     } else {
+      console.log(user);
       connection.emit("join room", {
         roomLobby,
         username: user.name,
@@ -37,24 +40,31 @@ const Lobby = (props) => {
       });
 
       connection.on("usersInLobby", (usersObj) => {
-        setUsers(usersObj);
+        if (mounted) {
+          setUsers(usersObj);
+        }
       });
 
       connection.on("getAllPairs", (pairs) => {
         let index;
-        pairs.forEach((pair, i) => {
-          const isPair = pair.filter((person, i) => {
-            if (person.name === user.name) {
-              setIndexInPair(i);
-            }
-            return person.name === user.name;
+        if (mounted) {
+          pairs.forEach((pair, i) => {
+            const isPair = pair.filter((person, i) => {
+              if (person.name === user.name) {
+                setIndexInPair(i);
+              }
+              return person.name === user.name;
+            });
+            if (isPair.length === 1) index = i + 1;
           });
-          if (isPair.length === 1) index = i + 1;
-        });
-        const url = origin + pathname + `/room${index}`;
-        setURL(url);
+          const url = origin + pathname + `/${index}`;
+          setURL(url);
+        }
       });
     }
+    return function cleanup() {
+      mounted = false;
+    };
   }, []);
 
   const handleClick = () => {
@@ -63,15 +73,22 @@ const Lobby = (props) => {
     });
   };
 
-  if (URL !== null && indexInPair === 0) navigate(URL);
+  if (URL !== null && indexInPair === 0)
+    navigate(URL, {
+      state: { user },
+    });
   if (URL !== null && indexInPair === 1) {
     setTimeout(function () {
-      navigate(URL);
+      navigate(URL, {
+        state: { user },
+      });
     }, 1000);
   }
   if (URL !== null && indexInPair === 2) {
     setTimeout(function () {
-      navigate(URL);
+      navigate(URL, {
+        state: { user },
+      });
     }, 2000);
   }
 
@@ -109,7 +126,9 @@ const Lobby = (props) => {
               <Box key={user.name}>
                 <ListItem alignItems="center">
                   <ListItemAvatar>
-                    <FaceIcon color="primary" className={classes.avatar} />
+                    <Avatar className={classes.avatar}>
+                      {user.name.slice(0, 1).toUpperCase()}
+                    </Avatar>
                   </ListItemAvatar>
                   <ListItemText>{user.name}</ListItemText>
                 </ListItem>

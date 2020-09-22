@@ -19,10 +19,10 @@ const Login = (props) => {
 
   useEffect(() => {
     let mounted = true;
-    if (mounted && connection !== "") {
+    if (connection !== "") {
       connection.emit("checkUsernames", roomLobby);
       connection.on("usersInLobby", (usersObj) => {
-        setUsers(usersObj);
+        if (mounted) setUsers(usersObj);
       });
     }
     return function cleanup() {
@@ -41,7 +41,6 @@ const Login = (props) => {
       });
       setInvalidUser(false);
     } else {
-      console.log("in the else");
       setInvalidUser(true);
     }
   };

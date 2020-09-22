@@ -11,7 +11,7 @@
 
 .partnerVideo {
   width: 350px;
-  border: solid 2px red;
+  border: solid 2px green;
   position: relative;
   z-index: 0;
 }
