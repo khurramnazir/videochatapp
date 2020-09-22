@@ -71,37 +71,36 @@ io.on("connection", (socket) => {
     });
   });
 
-
   socket.on("sendQuestion", ({ pair, roomLobby, triv }) => {
     socket.to(roomLobby + pair).emit("recievedQuestion", triv);
   });
 
   socket.on("ansSubmitted", ({ pair, roomLobby, isSubmitted }) => {
+    console.log("inside ansSubmitted");
     socket.to(roomLobby + pair).emit("recievedSubmitted", isSubmitted);
   });
 
   socket.on("sendAns", ({ pair, roomLobby, ans }) => {
     socket.to(roomLobby + pair).emit("recievedAnswer", ans);
 
-  // socket.on("leave lobby", (roomLobby) => {
-  //   socket.leave(roomLobby);
-  //   // let indexOfUser;
-  //   // allUsers[roomLobby].forEach((user, index) => {
-  //   //   if (user.id === socket.client.id) {
-  //   //     indexOfUser = index;
-  //   //   }
-  //   // });
-  //   // allUsers[roomLobby].splice(indexOfUser, 1);
+    // socket.on("leave lobby", (roomLobby) => {
+    //   socket.leave(roomLobby);
+    //   // let indexOfUser;
+    //   // allUsers[roomLobby].forEach((user, index) => {
+    //   //   if (user.id === socket.client.id) {
+    //   //     indexOfUser = index;
+    //   //   }
+    //   // });
+    //   // allUsers[roomLobby].splice(indexOfUser, 1);
 
-  // });
+    // });
+  });
 
-  socket.on("drawing", (data) => {
-    console.log("serverside")
-    console.log(data, "<<<--- drawing event server")
-    socket.broadcast.emit('recieveDrawing', data);
-  })
-
-});
+  socket.on("drawing", ({ pair, roomLobby, data }) => {
+    console.log("serverside");
+    console.log(data, "<<<--- drawing event server");
+    socket.to(roomLobby + pair).emit("recieveDrawing", data);
+  });
 });
 
 module.exports = { http, app };

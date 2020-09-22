@@ -32,11 +32,6 @@ const Video = (props) => {
   return <StyledVideo playsInline autoPlay ref={ref} />;
 };
 
-const videoConstraints = {
-  height: window.innerHeight / 2,
-  width: window.innerWidth / 2,
-};
-
 const Room = (props) => {
   const [peers, setPeers] = useState([]);
   const userVideo = useRef();
