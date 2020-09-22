@@ -47,7 +47,7 @@ const Room = (props) => {
   useEffect(() => {
     connection.emit("join pair", { pair, roomLobby });
     navigator.mediaDevices
-      .getUserMedia({ video: videoConstraints, video: true, audio: true })
+      .getUserMedia({ video: true, audio: true })
       .then((stream) => {
         userVideo.current.srcObject = stream;
 

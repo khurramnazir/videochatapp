@@ -10,7 +10,7 @@ io.on("connection", (socket) => {
   console.log(`user ${socket.client.id} connected`);
 
   socket.on("checkUsernames", (roomLobby) => {
-    console.log(allUsers);
+    // console.log(allUsers);
     socket.emit("usersInLobby", allUsers[roomLobby]);
   });
 
@@ -26,8 +26,8 @@ io.on("connection", (socket) => {
     io.in(roomLobby).emit("usersInLobby", allUsers[roomLobby]);
 
     socket.on("disconnect", (reason) => {
-      console.log(reason);
-      console.log("user disconnected");
+      // console.log(reason);
+      // console.log("user disconnected");
       const newArr = allUsers[roomLobby].filter((user) => {
         return user.id !== socket.client.id;
       });
@@ -83,17 +83,25 @@ io.on("connection", (socket) => {
   socket.on("sendAns", ({ pair, roomLobby, ans }) => {
     socket.to(roomLobby + pair).emit("recievedAnswer", ans);
 
-  socket.on("leave lobby", (roomLobby) => {
-    socket.leave(roomLobby);
-    // let indexOfUser;
-    // allUsers[roomLobby].forEach((user, index) => {
-    //   if (user.id === socket.client.id) {
-    //     indexOfUser = index;
-    //   }
-    // });
-    // allUsers[roomLobby].splice(indexOfUser, 1);
+  // socket.on("leave lobby", (roomLobby) => {
+  //   socket.leave(roomLobby);
+  //   // let indexOfUser;
+  //   // allUsers[roomLobby].forEach((user, index) => {
+  //   //   if (user.id === socket.client.id) {
+  //   //     indexOfUser = index;
+  //   //   }
+  //   // });
+  //   // allUsers[roomLobby].splice(indexOfUser, 1);
 
-  });
+  // });
+
+  socket.on("drawing", (data) => {
+    console.log("serverside")
+    console.log(data, "<<<--- drawing event server")
+    socket.broadcast.emit('recieveDrawing', data);
+  })
+
+});
 });
 
 module.exports = { http, app };

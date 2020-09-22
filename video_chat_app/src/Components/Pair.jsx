@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import CountDown from "../Components/CountDown";
 import Video from "../Components/Video";
 import Trivia from "../Components/Trivia";
+import Whiteboard from "../Components/Whiteboard";
 import ErrorPage from "./ErrorPage";
+
 
 const Pair = (props) => {
   const { roomLobby, pair, connection } = props;
-  console.log(props);
   let [showPartner, setShowPartner] = useState(false);
   const updateShowPartner = () => {
     setShowPartner(true);
@@ -24,6 +25,7 @@ const Pair = (props) => {
             roomLobby={roomLobby}
             pair={pair}
           />
+          <Whiteboard connection={connection} pair={pair} roomLobby={roomLobby} />
           <Trivia connection={connection} pair={pair} roomLobby={roomLobby} />
         </>
       ) : (
