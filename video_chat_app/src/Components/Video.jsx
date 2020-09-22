@@ -33,7 +33,7 @@ const Video = (props) => {
     props.peer.on("stream", (stream) => {
       ref.current.srcObject = stream;
     });
-  }, []);
+  });
 
   return <StyledPartnerVideo playsInline autoPlay ref={ref} />;
 };
@@ -42,7 +42,6 @@ const Room = (props) => {
   const [peers, setPeers] = useState([]);
   const userVideo = useRef();
   const peersRef = useRef([]);
-  const [usersInPair, setUsersInPair] = useState([]);
 
   const { connection, roomLobby, pair, user } = props;
 
@@ -55,9 +54,7 @@ const Room = (props) => {
       .getUserMedia({ video: true, audio: false })
       .then((stream) => {
         userVideo.current.srcObject = stream;
-
         connection.emit("getAllOtherUsers", { pair, roomLobby });
-
         connection.on("all other users", ({ users, pairs }) => {
           const peers = [];
           users.forEach((userID) => {
@@ -70,9 +67,7 @@ const Room = (props) => {
               peerName: peerName[0].name,
               peer,
             });
-
             peer.peerName = peerName[0].name;
-
             peers.push(peer);
           });
 
@@ -80,7 +75,6 @@ const Room = (props) => {
         });
 
         connection.on("user joined", (payload) => {
-          console.log("a user has joined...");
           const item = peersRef.current.find(
             (p) => p.peerID === payload.callerID
           );
@@ -141,7 +135,6 @@ const Room = (props) => {
   return (
     <Container>
       {peers.map((peer, index) => {
-        console.log(peers);
         return (
           <>
             <Video key={index} peer={peer} />

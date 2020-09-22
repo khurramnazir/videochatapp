@@ -28,7 +28,7 @@ const Login = (props) => {
     return function cleanup() {
       mounted = false;
     };
-  }, [name]);
+  }, [name, connection, roomLobby]);
 
   const handleSubmit = (submitEvent) => {
     submitEvent.preventDefault();

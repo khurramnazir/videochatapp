@@ -13,7 +13,7 @@ import {
   Typography,
   Avatar,
 } from "@material-ui/core";
-import FaceIcon from "@material-ui/icons/Face";
+//import FaceIcon from "@material-ui/icons/Face";
 import useStyles from "../styling/styles";
 
 const Lobby = (props) => {
@@ -32,7 +32,6 @@ const Lobby = (props) => {
     if (connection === "") {
       user = false;
     } else {
-      console.log(user);
       connection.emit("join room", {
         roomLobby,
         username: user.name,

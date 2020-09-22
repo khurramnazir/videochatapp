@@ -19,15 +19,22 @@ const Trivia = (props) => {
       setYourAnswer(null);
     });
 
-    connection.on("recievedSubmitted", (isSubmitted) => {
-      calcPoints();
-      setSubmitted(isSubmitted);
-    });
+    // connection.on("recievedSubmitted", (isSubmitted) => {
+    //   calcPoints();
+    //   setSubmitted(isSubmitted);
+    // });
 
     connection.on("recievedAnswer", (ans) => {
       ans === "true" ? setPartnerAnswer(true) : setPartnerAnswer(false);
     });
-  }, [partnerAnswer, trivia, submitted]);
+  }, [partnerAnswer, trivia, submitted, connection]);
+
+  useEffect(() => {
+    connection.on("recievedSubmitted", (isSubmitted) => {
+      calcPoints();
+      setSubmitted(isSubmitted);
+    });
+  });
 
   function sendAnswer(e) {
     const ans = e.target.value;
@@ -67,14 +74,11 @@ const Trivia = (props) => {
     <>
       <h2> Trivia Game </h2>
       {gameStarted === false ? (
-        <button onClick={startGame}>
-          {" "}
-          Start Game{" "}
-        </button>
+        <button onClick={startGame}> Start Game </button>
       ) : (
         <>
           <p> so far you have {points} points </p>
-          <p dangerouslySetInnerHTML={{__html:trivia.question}}/> 
+          <p dangerouslySetInnerHTML={{ __html: trivia.question }} />
           <button onClick={sendAnswer} value={true}>
             {" "}
             True{" "}
