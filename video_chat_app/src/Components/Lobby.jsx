@@ -27,6 +27,7 @@ const Lobby = (props) => {
   const [indexInPair, setIndexInPair] = useState(null);
 
   useEffect(() => {
+    let mounted = true;
     if (connection === "") {
       user = false;
     } else {
@@ -37,25 +38,31 @@ const Lobby = (props) => {
       });
 
       connection.on("usersInLobby", (usersObj) => {
-        console.log("getting users...");
-        setUsers(usersObj);
+        if (mounted) {
+          setUsers(usersObj);
+        }
       });
 
       connection.on("getAllPairs", (pairs) => {
         let index;
-        pairs.forEach((pair, i) => {
-          const isPair = pair.filter((person, i) => {
-            if (person.name === user.name) {
-              setIndexInPair(i);
-            }
-            return person.name === user.name;
+        if (mounted) {
+          pairs.forEach((pair, i) => {
+            const isPair = pair.filter((person, i) => {
+              if (person.name === user.name) {
+                setIndexInPair(i);
+              }
+              return person.name === user.name;
+            });
+            if (isPair.length === 1) index = i + 1;
           });
-          if (isPair.length === 1) index = i + 1;
-        });
-        const url = origin + pathname + `/room${index}`;
-        setURL(url);
+          const url = origin + pathname + `/${index}`;
+          setURL(url);
+        }
       });
     }
+    return function cleanup() {
+      mounted = false;
+    };
   }, []);
 
   const handleClick = () => {
@@ -68,12 +75,12 @@ const Lobby = (props) => {
   if (URL !== null && indexInPair === 1) {
     setTimeout(function () {
       navigate(URL);
-    }, 1000);
+    }, 10);
   }
   if (URL !== null && indexInPair === 2) {
     setTimeout(function () {
       navigate(URL);
-    }, 2000);
+    }, 20);
   }
 
   return (

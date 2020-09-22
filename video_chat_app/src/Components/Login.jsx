@@ -12,7 +12,6 @@ import useStyles from "../styling/styles";
 const Login = (props) => {
   const [name, setName] = useState("");
   const [users, setUsers] = useState([]);
-  const [isIdInLobby, setIdInLobby] = useState(false);
   const [isInvalidUser, setInvalidUser] = useState(null);
   const { roomLobby, connection } = props;
   const { origin } = props.location;
@@ -24,29 +23,6 @@ const Login = (props) => {
       connection.emit("checkUsernames", roomLobby);
       connection.on("usersInLobby", (usersObj) => {
         if (mounted) setUsers(usersObj);
-      });
-    }
-    return function cleanup() {
-      mounted = false;
-    };
-  }, [name]);
-
-  useEffect(() => {
-    let mounted = true;
-    if (connection !== "") {
-      connection.emit("checkUsernames", roomLobby);
-      connection.on("usersInLobby", (usersObj) => {
-        if (mounted) {
-          setUsers(usersObj);
-          const userInLobby = users.filter((user) => {
-            return user.id === connection.id;
-          });
-          console.log(userInLobby);
-          if (userInLobby.length > 0) {
-            setIdInLobby(true);
-            connection.emit("leave lobby", roomLobby);
-          }
-        }
       });
     }
     return function cleanup() {
@@ -69,20 +45,19 @@ const Login = (props) => {
     }
   };
 
-  // const userInLobby = users.filter((user) => {
-  //   return user.id === connection.id;
-  // });
-  // if (userInLobby.length > 0) {
-  //   console.log(connection);
-  //   connection.emit("leave lobby", roomLobby);
-  // }
+  const userInLobby = users.filter((user) => {
+    return user.id === connection.id;
+  });
+  if (userInLobby.length > 0) {
+    connection.emit("leave lobby", roomLobby);
+  }
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
         <Typography variant="h5">
-          {!isIdInLobby
+          {userInLobby.length === 0
             ? `Welcome! Please enter a username to join the ${
                 roomLobby.split("=")[0]
               } group`

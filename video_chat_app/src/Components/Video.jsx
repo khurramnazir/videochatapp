@@ -20,6 +20,12 @@ const StyledVideo = styled.video`
   border: solid 3px red;
 `;
 
+const StyledPartnerVideo = styled.video`
+  height: 40%;
+  width: 50%;
+  border: solid 3px green;
+`;
+
 const Video = (props) => {
   const ref = useRef();
 
@@ -29,7 +35,7 @@ const Video = (props) => {
     });
   }, []);
 
-  return <StyledVideo playsInline autoPlay ref={ref} />;
+  return <StyledPartnerVideo playsInline autoPlay ref={ref} />;
 };
 
 const videoConstraints = {
@@ -46,8 +52,11 @@ const Room = (props) => {
 
   useEffect(() => {
     connection.emit("join pair", { pair, roomLobby });
+    connection.on("getPairInfo", (pairs) => {
+      console.log(pairs);
+    });
     navigator.mediaDevices
-      .getUserMedia({ video: videoConstraints, video: true, audio: true })
+      .getUserMedia({ video: videoConstraints, video: true, audio: false })
       .then((stream) => {
         userVideo.current.srcObject = stream;
 
@@ -57,7 +66,6 @@ const Room = (props) => {
           const peers = [];
           users.forEach((userID) => {
             const peer = createPeer(userID, connection.id, stream);
-
             peersRef.current.push({
               peerID: userID,
               peer,
@@ -70,6 +78,7 @@ const Room = (props) => {
         });
 
         connection.on("user joined", (payload) => {
+          console.log("a user has joined...");
           const item = peersRef.current.find(
             (p) => p.peerID === payload.callerID
           );
@@ -124,8 +133,15 @@ const Room = (props) => {
   return (
     <Container>
       <StyledVideo muted ref={userVideo} autoPlay playsInline />
+
       {peers.map((peer, index) => {
-        return <Video key={index} peer={peer} />;
+        console.log(peers);
+        return (
+          <section>
+            <Video key={index} peer={peer} />
+            <p></p>
+          </section>
+        );
       })}
       {/* <Trivia connection={connection} pair={pair} roomLobby={roomLobby} /> */}
     </Container>
