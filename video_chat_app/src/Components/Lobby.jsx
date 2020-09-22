@@ -31,6 +31,7 @@ const Lobby = (props) => {
     if (connection === "") {
       user = false;
     } else {
+      console.log(user);
       connection.emit("join room", {
         roomLobby,
         username: user.name,
@@ -71,16 +72,23 @@ const Lobby = (props) => {
     });
   };
 
-  if (URL !== null && indexInPair === 0) navigate(URL);
+  if (URL !== null && indexInPair === 0)
+    navigate(URL, {
+      state: { user },
+    });
   if (URL !== null && indexInPair === 1) {
     setTimeout(function () {
-      navigate(URL);
-    }, 10);
+      navigate(URL, {
+        state: { user },
+      });
+    }, 1000);
   }
   if (URL !== null && indexInPair === 2) {
     setTimeout(function () {
-      navigate(URL);
-    }, 20);
+      navigate(URL, {
+        state: { user },
+      });
+    }, 2000);
   }
 
   return (

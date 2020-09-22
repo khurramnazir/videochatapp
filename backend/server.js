@@ -5,6 +5,7 @@ const io = require("socket.io")(http);
 const { pairUp } = require("../utils/index");
 
 allUsers = {};
+pairs = [];
 
 io.on("connection", (socket) => {
   console.log(`user ${socket.client.id} connected`);
@@ -36,14 +37,13 @@ io.on("connection", (socket) => {
   });
 
   socket.on("move room", ({ roomLobby }) => {
-    const pairs = pairUp(allUsers[roomLobby]);
+    pairs = pairUp(allUsers[roomLobby]);
     io.in(roomLobby).emit("getAllPairs", pairs);
   });
 
   socket.on("join pair", ({ pair, roomLobby }) => {
     socket.join(roomLobby + pair);
-    const pairs = pairUp(allUsers[roomLobby]);
-    io.in(roomLobby + pair).emit("getPairInfo", pairs);
+    io.in(roomLobby + pair).emit("getPairInfo", pairs[pair - 1]);
   });
 
   socket.on("getAllOtherUsers", ({ pair, roomLobby }) => {
@@ -51,10 +51,10 @@ io.on("connection", (socket) => {
       const myid = socket.client.id;
 
       const users = clients.filter((id) => {
-        return id === myid;
+        return id !== myid;
       });
 
-      socket.to(roomLobby + pair).emit("all other users", users);
+      socket.emit("all other users", { users, pairs: pairs[pair - 1] });
     });
   });
 
@@ -62,6 +62,7 @@ io.on("connection", (socket) => {
     io.to(payload.userToSignal).emit("user joined", {
       signal: payload.signal,
       callerID: payload.callerID,
+      pair: pairs[payload.pair - 1],
     });
   });
 

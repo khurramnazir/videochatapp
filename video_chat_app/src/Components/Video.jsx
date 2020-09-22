@@ -47,14 +47,15 @@ const Room = (props) => {
   const [peers, setPeers] = useState([]);
   const userVideo = useRef();
   const peersRef = useRef([]);
+  const [usersInPair, setUsersInPair] = useState([]);
 
-  const { connection, roomLobby, pair } = props;
+  const { connection, roomLobby, pair, user } = props;
 
   useEffect(() => {
     connection.emit("join pair", { pair, roomLobby });
-    connection.on("getPairInfo", (pairs) => {
-      console.log(pairs);
-    });
+    // connection.on("getPairInfo", (pairs) => {
+    //   setUsersInPair(pairs);
+    // });
     navigator.mediaDevices
       .getUserMedia({ video: videoConstraints, video: true, audio: false })
       .then((stream) => {
@@ -62,14 +63,20 @@ const Room = (props) => {
 
         connection.emit("getAllOtherUsers", { pair, roomLobby });
 
-        connection.on("all other users", (users) => {
+        connection.on("all other users", ({ users, pairs }) => {
           const peers = [];
           users.forEach((userID) => {
+            const peerName = pairs.filter((user) => {
+              return user.id === userID;
+            });
             const peer = createPeer(userID, connection.id, stream);
             peersRef.current.push({
               peerID: userID,
+              peerName: peerName[0].name,
               peer,
             });
+
+            peer.peerName = peerName[0].name;
 
             peers.push(peer);
           });
@@ -83,11 +90,16 @@ const Room = (props) => {
             (p) => p.peerID === payload.callerID
           );
           if (!item) {
+            const peerName = payload.pair.filter((user) => {
+              return user.id === payload.callerID;
+            });
             const peer = addPeer(payload.signal, payload.callerID, stream);
             peersRef.current.push({
               peerID: payload.callerID,
+              peerName: peerName[0].name,
               peer,
             });
+            peer.peerName = peerName[0].name;
             setPeers((users) => [...users, peer]);
           }
         });
@@ -111,6 +123,7 @@ const Room = (props) => {
         userToSignal,
         callerID,
         signal,
+        pair,
       });
     });
 
@@ -133,13 +146,14 @@ const Room = (props) => {
   return (
     <Container>
       <StyledVideo muted ref={userVideo} autoPlay playsInline />
+      <p>{`this is ${user.name}'s video`}</p>
 
       {peers.map((peer, index) => {
         console.log(peers);
         return (
           <section>
             <Video key={index} peer={peer} />
-            <p></p>
+            <p>{`this is ${peer.peerName}'s video`}</p>
           </section>
         );
       })}
