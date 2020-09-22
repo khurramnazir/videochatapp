@@ -15,8 +15,8 @@ const Container = styled.div`
 `;
 
 const StyledVideo = styled.video`
-  height: 40%;
-  width: 50%;
+  height: 20%;
+  width: 25%;
   border: solid 3px red;
 `;
 
@@ -145,18 +145,17 @@ const Room = (props) => {
 
   return (
     <Container>
-      <StyledVideo muted ref={userVideo} autoPlay playsInline />
-      <p>{`this is ${user.name}'s video`}</p>
-
       {peers.map((peer, index) => {
         console.log(peers);
         return (
-          <section>
+          <>
             <Video key={index} peer={peer} />
             <p>{`this is ${peer.peerName}'s video`}</p>
-          </section>
+          </>
         );
       })}
+      <StyledVideo muted ref={userVideo} autoPlay playsInline />
+      <p>{`this is ${user.name}'s video`}</p>
       {/* <Trivia connection={connection} pair={pair} roomLobby={roomLobby} /> */}
     </Container>
   );

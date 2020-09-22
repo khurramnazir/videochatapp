@@ -11,6 +11,7 @@ import {
   CssBaseline,
   Box,
   Typography,
+  Avatar,
 } from "@material-ui/core";
 import FaceIcon from "@material-ui/icons/Face";
 import useStyles from "../styling/styles";
@@ -125,7 +126,9 @@ const Lobby = (props) => {
               <Box key={user.name}>
                 <ListItem alignItems="center">
                   <ListItemAvatar>
-                    <FaceIcon color="primary" className={classes.avatar} />
+                    <Avatar className={classes.avatar}>
+                      {user.name.slice(0, 1).toUpperCase()}
+                    </Avatar>
                   </ListItemAvatar>
                   <ListItemText>{user.name}</ListItemText>
                 </ListItem>
