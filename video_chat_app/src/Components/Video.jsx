@@ -15,9 +15,15 @@ const Container = styled.div`
 `;
 
 const StyledVideo = styled.video`
+  height: 20%;
+  width: 25%;
+  border: solid 3px red;
+`;
+
+const StyledPartnerVideo = styled.video`
   height: 40%;
   width: 50%;
-  border: solid 3px red;
+  border: solid 3px green;
 `;
 
 const Video = (props) => {
@@ -29,7 +35,7 @@ const Video = (props) => {
     });
   }, []);
 
-  return <StyledVideo playsInline autoPlay ref={ref} />;
+  return <StyledPartnerVideo playsInline autoPlay ref={ref} />;
 };
 
 const videoConstraints = {
@@ -41,27 +47,36 @@ const Room = (props) => {
   const [peers, setPeers] = useState([]);
   const userVideo = useRef();
   const peersRef = useRef([]);
+  const [usersInPair, setUsersInPair] = useState([]);
 
-  const { connection, roomLobby, pair } = props;
+  const { connection, roomLobby, pair, user } = props;
 
   useEffect(() => {
     connection.emit("join pair", { pair, roomLobby });
+    // connection.on("getPairInfo", (pairs) => {
+    //   setUsersInPair(pairs);
+    // });
     navigator.mediaDevices
-      .getUserMedia({ video: videoConstraints, video: true, audio: true })
+      .getUserMedia({ video: videoConstraints, video: true, audio: false })
       .then((stream) => {
         userVideo.current.srcObject = stream;
 
         connection.emit("getAllOtherUsers", { pair, roomLobby });
 
-        connection.on("all other users", (users) => {
+        connection.on("all other users", ({ users, pairs }) => {
           const peers = [];
           users.forEach((userID) => {
+            const peerName = pairs.filter((user) => {
+              return user.id === userID;
+            });
             const peer = createPeer(userID, connection.id, stream);
-
             peersRef.current.push({
               peerID: userID,
+              peerName: peerName[0].name,
               peer,
             });
+
+            peer.peerName = peerName[0].name;
 
             peers.push(peer);
           });
@@ -70,15 +85,21 @@ const Room = (props) => {
         });
 
         connection.on("user joined", (payload) => {
+          console.log("a user has joined...");
           const item = peersRef.current.find(
             (p) => p.peerID === payload.callerID
           );
           if (!item) {
+            const peerName = payload.pair.filter((user) => {
+              return user.id === payload.callerID;
+            });
             const peer = addPeer(payload.signal, payload.callerID, stream);
             peersRef.current.push({
               peerID: payload.callerID,
+              peerName: peerName[0].name,
               peer,
             });
+            peer.peerName = peerName[0].name;
             setPeers((users) => [...users, peer]);
           }
         });
@@ -102,6 +123,7 @@ const Room = (props) => {
         userToSignal,
         callerID,
         signal,
+        pair,
       });
     });
 
@@ -123,10 +145,17 @@ const Room = (props) => {
 
   return (
     <Container>
-      <StyledVideo muted ref={userVideo} autoPlay playsInline />
       {peers.map((peer, index) => {
-        return <Video key={index} peer={peer} />;
+        console.log(peers);
+        return (
+          <>
+            <Video key={index} peer={peer} />
+            <p>{`this is ${peer.peerName}'s video`}</p>
+          </>
+        );
       })}
+      <StyledVideo muted ref={userVideo} autoPlay playsInline />
+      <p>{`this is ${user.name}'s video`}</p>
       {/* <Trivia connection={connection} pair={pair} roomLobby={roomLobby} /> */}
     </Container>
   );

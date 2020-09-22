@@ -6,6 +6,7 @@ import ErrorPage from "./ErrorPage";
 
 const Pair = (props) => {
   const { roomLobby, pair, connection } = props;
+  let user = props.location.state.user;
   console.log(props);
   let [showPartner, setShowPartner] = useState(false);
   const updateShowPartner = () => {
@@ -23,6 +24,7 @@ const Pair = (props) => {
             connection={connection}
             roomLobby={roomLobby}
             pair={pair}
+            user={user}
           />
           <Trivia connection={connection} pair={pair} roomLobby={roomLobby} />
         </>

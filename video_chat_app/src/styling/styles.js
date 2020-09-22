@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
+import { deepOrange, deepPurple } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -10,6 +11,8 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
+    // color: theme.palette.getContrastText(deepPurple[500]),
+    // backgroundColor: deepPurple[500],
   },
   form: {
     width: "100%",
