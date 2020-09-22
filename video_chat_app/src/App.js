@@ -7,7 +7,10 @@ import RoomCreator from "./Components/RoomCreator";
 import Lobby from "./Components/Lobby";
 import Login from "./Components/Login";
 import Pair from "./Components/Pair";
-// import ErrorPage from "./Components/ErrorPage";
+
+
+import ErrorPage from "./Components/ErrorPage";
+
 import io from "socket.io-client";
 import { useEffect, useRef } from "react";
 
@@ -29,12 +32,15 @@ const App = () => {
       <Router>
         <RoomCreator path="/" />
         <Lobby path="/:roomLobby" connection={connection} />
-        <Login path="/login/:roomLobby" />
+        <Login path="/login/:roomLobby" connection={connection} />
         <Pair path="/:roomLobby/:pair" connection={connection} />
-        {/* <ErrorPage default status={404} msg={"Path not found"} /> */}
+        <ErrorPage default status={404} msg={"Path not found"} />
       </Router>
     </div>
   );
 };
 
 export default App;
+
+//"postinstall": "npm run build" for APP
+// "postinstall": "cd ./video_chat_app && npm i"

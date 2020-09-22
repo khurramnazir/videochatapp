@@ -33,6 +33,7 @@
     "simple-peer": "^9.7.2",
     "socket.io": "^2.3.0",
     "start": "^5.1.0",
-    "styled-components": "^5.2.0"
+    "styled-components": "^5.2.0",
+    "uuid": "^8.3.0"
   }
 }

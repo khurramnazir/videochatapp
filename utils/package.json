@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "utils-json",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "axios": "^0.20.0"
+  },
   "devDependencies": {
     "jest": "^26.4.2"
   },
