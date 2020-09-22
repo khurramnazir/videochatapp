@@ -9,6 +9,11 @@ allUsers = {};
 io.on("connection", (socket) => {
   console.log(`user ${socket.client.id} connected`);
 
+  socket.on("checkUsernames", (roomLobby) => {
+    console.log(allUsers);
+    socket.emit("usersInLobby", allUsers[roomLobby]);
+  });
+
   socket.on("join room", ({ roomLobby, username, type }) => {
     socket.join(roomLobby);
     const userObject = { name: username, id: socket.client.id, type };
@@ -63,6 +68,17 @@ io.on("connection", (socket) => {
       signal: payload.signal,
       id: socket.id,
     });
+  });
+
+  socket.on("leave lobby", (roomLobby) => {
+    socket.leave(roomLobby);
+    // let indexOfUser;
+    // allUsers[roomLobby].forEach((user, index) => {
+    //   if (user.id === socket.client.id) {
+    //     indexOfUser = index;
+    //   }
+    // });
+    // allUsers[roomLobby].splice(indexOfUser, 1);
   });
 });
 
