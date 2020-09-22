@@ -37,6 +37,7 @@ const Lobby = (props) => {
       });
 
       connection.on("usersInLobby", (usersObj) => {
+        console.log("getting users...");
         setUsers(usersObj);
       });
 

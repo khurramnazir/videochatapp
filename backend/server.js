@@ -10,11 +10,11 @@ io.on("connection", (socket) => {
   console.log(`user ${socket.client.id} connected`);
 
   socket.on("checkUsernames", (roomLobby) => {
-    console.log(allUsers);
     socket.emit("usersInLobby", allUsers[roomLobby]);
   });
 
   socket.on("join room", ({ roomLobby, username, type }) => {
+    console.log("joining room");
     socket.join(roomLobby);
     const userObject = { name: username, id: socket.client.id, type };
     if (allUsers[roomLobby]) {
@@ -32,7 +32,7 @@ io.on("connection", (socket) => {
         return user.id !== socket.client.id;
       });
       allUsers[roomLobby] = newArr;
-      io.in(roomLobby).emit("usersInLobby", newArr);
+      io.in(roomLobby).emit("usersInLobby", allUsers[roomLobby]);
     });
   });
 
@@ -71,7 +71,6 @@ io.on("connection", (socket) => {
     });
   });
 
-
   socket.on("sendQuestion", ({ pair, roomLobby, triv }) => {
     socket.to(roomLobby + pair).emit("recievedQuestion", triv);
   });
@@ -82,17 +81,23 @@ io.on("connection", (socket) => {
 
   socket.on("sendAns", ({ pair, roomLobby, ans }) => {
     socket.to(roomLobby + pair).emit("recievedAnswer", ans);
+  });
 
   socket.on("leave lobby", (roomLobby) => {
+    console.log("in the leave lobby", socket.client.id, socket.username);
     socket.leave(roomLobby);
-    // let indexOfUser;
-    // allUsers[roomLobby].forEach((user, index) => {
-    //   if (user.id === socket.client.id) {
-    //     indexOfUser = index;
-    //   }
-    // });
-    // allUsers[roomLobby].splice(indexOfUser, 1);
 
+    // io.in(roomLobby).clients((err, clients) => {
+    //   console.log(clients);
+    // });
+    let indexOfUser;
+    allUsers[roomLobby].forEach((user, index) => {
+      if (user.id === socket.client.id) {
+        indexOfUser = index;
+      }
+    });
+    allUsers[roomLobby].splice(indexOfUser, 1);
+    io.in(roomLobby).emit("usersInLobby", allUsers[roomLobby]);
   });
 });
 
