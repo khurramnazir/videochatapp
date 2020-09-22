@@ -7,8 +7,10 @@ import RoomCreator from "./Components/RoomCreator";
 import Lobby from "./Components/Lobby";
 import Login from "./Components/Login";
 import Pair from "./Components/Pair";
-import Trivia from "./Components/Trivia"; // this should go in the 'pair' component
+
+
 import ErrorPage from "./Components/ErrorPage";
+
 import io from "socket.io-client";
 import { useEffect, useRef } from "react";
 
@@ -34,8 +36,6 @@ const App = () => {
         <Pair path="/:roomLobby/:pair" connection={connection} />
         <ErrorPage default status={404} msg={"Path not found"} />
       </Router>
-
-      {/* <Trivia /> this should go in the 'pair' component */}
     </div>
   );
 };

@@ -2,6 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 //import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled from "styled-components";
+//import Trivia from "../Components/Trivia";
+
+const Container = styled.div`
+  padding: 20px;
+  display: flex;
+  height: 100vh;
+  width: 90%;
+  flex-direction: row;
+  margin: auto;
+  flex-wrap: wrap;
+`;
 
 const StyledVideo = styled.video`
   height: 40%;
@@ -21,6 +32,11 @@ const Video = (props) => {
   return <StyledVideo playsInline autoPlay ref={ref} />;
 };
 
+const videoConstraints = {
+  height: window.innerHeight / 2,
+  width: window.innerWidth / 2,
+};
+
 const Room = (props) => {
   const [peers, setPeers] = useState([]);
   const userVideo = useRef();
@@ -31,7 +47,7 @@ const Room = (props) => {
   useEffect(() => {
     connection.emit("join pair", { pair, roomLobby });
     navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
+      .getUserMedia({ video: videoConstraints, video: true, audio: true })
       .then((stream) => {
         userVideo.current.srcObject = stream;
 
@@ -106,12 +122,13 @@ const Room = (props) => {
   }
 
   return (
-    <section>
+    <Container>
       <StyledVideo muted ref={userVideo} autoPlay playsInline />
       {peers.map((peer, index) => {
         return <Video key={index} peer={peer} />;
       })}
-    </section>
+      {/* <Trivia connection={connection} pair={pair} roomLobby={roomLobby} /> */}
+    </Container>
   );
 };
 

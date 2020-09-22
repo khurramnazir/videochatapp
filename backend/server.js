@@ -63,12 +63,25 @@ io.on("connection", (socket) => {
       callerID: payload.callerID,
     });
   });
+
   socket.on("returning signal", (payload) => {
     io.to(payload.callerID).emit("receiving returned signal", {
       signal: payload.signal,
       id: socket.id,
     });
   });
+
+
+  socket.on("sendQuestion", ({ pair, roomLobby, triv }) => {
+    socket.to(roomLobby + pair).emit("recievedQuestion", triv);
+  });
+
+  socket.on("ansSubmitted", ({ pair, roomLobby, isSubmitted }) => {
+    socket.to(roomLobby + pair).emit("recievedSubmitted", isSubmitted);
+  });
+
+  socket.on("sendAns", ({ pair, roomLobby, ans }) => {
+    socket.to(roomLobby + pair).emit("recievedAnswer", ans);
 
   socket.on("leave lobby", (roomLobby) => {
     socket.leave(roomLobby);
@@ -79,6 +92,7 @@ io.on("connection", (socket) => {
     //   }
     // });
     // allUsers[roomLobby].splice(indexOfUser, 1);
+
   });
 });
 
