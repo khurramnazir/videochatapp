@@ -11,7 +11,7 @@ io.on("connection", (socket) => {
   console.log(`user ${socket.client.id} connected`);
 
   socket.on("checkUsernames", (roomLobby) => {
-    socket.emit("usersInLobby", allUsers[roomLobby]);
+  socket.emit("usersInLobby", allUsers[roomLobby]);
   });
 
   socket.on("join room", ({ roomLobby, username, type }) => {
@@ -26,8 +26,8 @@ io.on("connection", (socket) => {
     io.in(roomLobby).emit("usersInLobby", allUsers[roomLobby]);
 
     socket.on("disconnect", (reason) => {
-      console.log(reason);
-      console.log("user disconnected");
+      // console.log(reason);
+      // console.log("user disconnected");
       const newArr = allUsers[roomLobby].filter((user) => {
         return user.id !== socket.client.id;
       });
@@ -78,6 +78,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("ansSubmitted", ({ pair, roomLobby, isSubmitted }) => {
+    console.log("inside ansSubmitted");
     socket.to(roomLobby + pair).emit("recievedSubmitted", isSubmitted);
   });
 
@@ -85,6 +86,12 @@ io.on("connection", (socket) => {
     socket.to(roomLobby + pair).emit("recievedAnswer", ans);
   });
 
+  socket.on("drawing", ({ pair, roomLobby, data }) => {
+    console.log("serverside");
+    console.log(data, "<<<--- drawing event server");
+    socket.to(roomLobby + pair).emit("recieveDrawing", data);
+  });
+  
   socket.on("leave lobby", (roomLobby) => {
     if (socket.rooms[roomLobby]) {
       socket.leave(roomLobby);

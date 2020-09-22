@@ -23,8 +23,6 @@ const RoomCreator = () => {
     // const socket = io.connect("http://localhost:5000");
   };
 
-  console.log(uuid());
-
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />

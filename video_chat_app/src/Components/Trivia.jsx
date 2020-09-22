@@ -67,15 +67,14 @@ const Trivia = (props) => {
     <>
       <h2> Trivia Game </h2>
       {gameStarted === false ? (
-        <button onClick={startGame} value={startGame}>
+        <button onClick={startGame}>
           {" "}
           Start Game{" "}
         </button>
       ) : (
         <>
           <p> so far you have {points} points </p>
-          {console.log(trivia)}
-          <p> {trivia.question} </p>
+          <p dangerouslySetInnerHTML={{__html:trivia.question}}/> 
           <button onClick={sendAnswer} value={true}>
             {" "}
             True{" "}

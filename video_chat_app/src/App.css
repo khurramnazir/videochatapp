@@ -22,3 +22,36 @@
   left: 50%;
   z-index: 1;
 }
+
+/* whiteboard */
+
+.whiteboard {
+  border: solid 1px red;
+  height: 50%;
+  width: 50%;
+  position: relative;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+}
+
+.colors {
+  position: relative;
+  border: dashed 5px blue;
+}
+
+.color {
+  border: solid 2px green;
+  margin: 5px;
+  padding: 5px;
+  display: inline-block;
+  height: 48px;
+  width: 48px;
+}
+
+.color.black { background-color: black; }
+.color.red { background-color: red; }
+.color.green { background-color: green; }
+.color.blue { background-color: blue; }
+.color.yellow { background-color: yellow; }
