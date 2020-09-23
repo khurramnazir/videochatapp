@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 const Whiteboard = (props) => {
   const whiteboardRef = useRef();
   const colorsRef = useRef();
+
   const { connection, pair, roomLobby } = props;
 
   let drawing = false;
@@ -16,12 +17,6 @@ const Whiteboard = (props) => {
     canvas.addEventListener("mouseup", onMouseUp, false);
     canvas.addEventListener("mouseout", onMouseUp, false);
     canvas.addEventListener("mousemove", throttle(onMouseMove, 10), false);
-
-    //Touch support for mobile devices
-    // canvas.addEventListener("touchstart", onMouseDown, false);
-    // canvas.addEventListener("touchend", onMouseUp, false);
-    // canvas.addEventListener("touchcancel", onMouseUp, false);
-    // canvas.addEventListener("touchmove", throttle(onMouseMove, 10), false);
 
     connection.on("recieveDrawing", onDrawingEvent);
 
@@ -48,15 +43,13 @@ const Whiteboard = (props) => {
         y1: y1 / h,
         color: color,
       };
-      console.log(data);
       sendDrawing(data);
-      // connection.emit("drawing", { pair, roomLobby, data});
     }
 
     function onMouseDown(e) {
       drawing = true;
-      current.x = e.clientX || e.touches[0].clientX;
-      current.y = e.clientY || e.touches[0].clientY;
+      current.x = e.clientX;
+      current.y = e.clientY;
     }
 
     function onMouseUp(e) {
@@ -78,16 +71,9 @@ const Whiteboard = (props) => {
       if (!drawing) {
         return;
       }
-      drawLine(
-        current.x,
-        current.y,
-        e.clientX || e.touches[0].clientX,
-        e.clientY || e.touches[0].clientY,
-        current.color,
-        true
-      );
-      current.x = e.clientX || e.touches[0].clientX;
-      current.y = e.clientY || e.touches[0].clientY;
+      drawLine(current.x, current.y, e.clientX, e.clientY, current.color, true);
+      current.x = e.clientX;
+      current.y = e.clientY;
     }
 
     // limit the number of events per second
@@ -104,7 +90,6 @@ const Whiteboard = (props) => {
     }
 
     function onDrawingEvent(data) {
-      console.log(data, "<<<--- drawing event client");
       let w = canvas.width;
       let h = canvas.height;
       drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color);

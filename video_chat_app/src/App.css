@@ -27,13 +27,14 @@
 
 .whiteboard {
   border: solid 1px red;
-  height: 50%;
-  width: 50%;
+  height: 500px;
+  width: 750px;
   position: relative;
   left: 0;
   right: 0;
   bottom: 0;
   top: 0;
+  cursor: crosshair;
 }
 
 .colors {
@@ -50,8 +51,18 @@
   width: 48px;
 }
 
-.color.black { background-color: black; }
-.color.red { background-color: red; }
-.color.green { background-color: green; }
-.color.blue { background-color: blue; }
-.color.yellow { background-color: yellow; }
+.color.black {
+  background-color: black;
+}
+.color.red {
+  background-color: red;
+}
+.color.green {
+  background-color: green;
+}
+.color.blue {
+  background-color: blue;
+}
+.color.yellow {
+  background-color: yellow;
+}

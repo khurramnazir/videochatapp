@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 //import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled from "styled-components";
@@ -33,18 +33,55 @@ const Video = (props) => {
     props.peer.on("stream", (stream) => {
       ref.current.srcObject = stream;
     });
-  }, []);
+  });
 
   return <StyledPartnerVideo playsInline autoPlay ref={ref} />;
 };
 
 const Room = (props) => {
   const [peers, setPeers] = useState([]);
+  const [myName, setMyName] = useState([]);
   const userVideo = useRef();
   const peersRef = useRef([]);
-  const [usersInPair, setUsersInPair] = useState([]);
+  const { connection, roomLobby, pair } = props;
 
-  const { connection, roomLobby, pair, user } = props;
+  const createPeer = useCallback(
+    (userToSignal, callerID, stream) => {
+      const peer = new Peer({
+        initiator: true,
+        trickle: false,
+        stream,
+      });
+
+      peer.on("signal", (signal) => {
+        connection.emit("sending signal", {
+          userToSignal,
+          callerID,
+          signal,
+          pair,
+        });
+      });
+
+      return peer;
+    },
+    [connection, pair]
+  );
+
+  const addPeer = useCallback(
+    (incomingSignal, callerID, stream) => {
+      const peer = new Peer({
+        initiator: false,
+        trickle: false,
+        stream,
+      });
+      peer.on("signal", (signal) => {
+        connection.emit("returning signal", { signal, callerID });
+      });
+      peer.signal(incomingSignal);
+      return peer;
+    },
+    [connection]
+  );
 
   useEffect(() => {
     connection.emit("join pair", { pair, roomLobby });
@@ -55,10 +92,13 @@ const Room = (props) => {
       .getUserMedia({ video: true, audio: false })
       .then((stream) => {
         userVideo.current.srcObject = stream;
-
         connection.emit("getAllOtherUsers", { pair, roomLobby });
-
         connection.on("all other users", ({ users, pairs }) => {
+          const myInfo = pairs.filter((user) => {
+            return user.id === connection.id;
+          });
+          setMyName(myInfo[0].name);
+
           const peers = [];
           users.forEach((userID) => {
             const peerName = pairs.filter((user) => {
@@ -70,9 +110,7 @@ const Room = (props) => {
               peerName: peerName[0].name,
               peer,
             });
-
             peer.peerName = peerName[0].name;
-
             peers.push(peer);
           });
 
@@ -80,7 +118,6 @@ const Room = (props) => {
         });
 
         connection.on("user joined", (payload) => {
-          console.log("a user has joined...");
           const item = peersRef.current.find(
             (p) => p.peerID === payload.callerID
           );
@@ -104,53 +141,52 @@ const Room = (props) => {
           item.peer.signal(payload.signal);
         });
       });
-  }, []);
+  }, [addPeer, createPeer, connection, pair, roomLobby]);
 
-  function createPeer(userToSignal, callerID, stream) {
-    const peer = new Peer({
-      initiator: true,
-      trickle: false,
-      stream,
-    });
+  // function createPeer(userToSignal, callerID, stream) {
+  //   const peer = new Peer({
+  //     initiator: true,
+  //     trickle: false,
+  //     stream,
+  //   });
 
-    peer.on("signal", (signal) => {
-      connection.emit("sending signal", {
-        userToSignal,
-        callerID,
-        signal,
-        pair,
-      });
-    });
+  //   peer.on("signal", (signal) => {
+  //     connection.emit("sending signal", {
+  //       userToSignal,
+  //       callerID,
+  //       signal,
+  //       pair,
+  //     });
+  //   });
 
-    return peer;
-  }
+  //   return peer;
+  // }
 
-  function addPeer(incomingSignal, callerID, stream) {
-    const peer = new Peer({
-      initiator: false,
-      trickle: false,
-      stream,
-    });
-    peer.on("signal", (signal) => {
-      connection.emit("returning signal", { signal, callerID });
-    });
-    peer.signal(incomingSignal);
-    return peer;
-  }
+  // function addPeer(incomingSignal, callerID, stream) {
+  //   const peer = new Peer({
+  //     initiator: false,
+  //     trickle: false,
+  //     stream,
+  //   });
+  //   peer.on("signal", (signal) => {
+  //     connection.emit("returning signal", { signal, callerID });
+  //   });
+  //   peer.signal(incomingSignal);
+  //   return peer;
+  // }
 
   return (
     <Container>
       {peers.map((peer, index) => {
-        console.log(peers);
         return (
-          <>
-            <Video key={index} peer={peer} />
+          <ul key={index}>
+            <Video peer={peer} />
             <p>{`this is ${peer.peerName}'s video`}</p>
-          </>
+          </ul>
         );
       })}
       <StyledVideo muted ref={userVideo} autoPlay playsInline />
-      <p>{`this is ${user.name}'s video`}</p>
+      <p>{`this is ${myName}'s video`}</p>
       {/* <Trivia connection={connection} pair={pair} roomLobby={roomLobby} /> */}
     </Container>
   );
