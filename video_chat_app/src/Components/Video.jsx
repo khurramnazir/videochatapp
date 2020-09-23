@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-//import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled from "styled-components";
-//import Trivia from "../Components/Trivia";
+import Grid from '@material-ui/core/Grid';
+import useStyles from "../styling/styles";
 
 const Container = styled.div`
   padding: 20px;
@@ -15,15 +15,13 @@ const Container = styled.div`
 `;
 
 const StyledVideo = styled.video`
-  height: 20%;
-  width: 25%;
-  border: solid 3px red;
+  max-width: 80%;
+  border: solid 1px red;
 `;
 
 const StyledPartnerVideo = styled.video`
-  height: 40%;
-  width: 50%;
-  border: solid 3px green;
+  max-width: 80%;
+  border: solid 1px green;
 `;
 
 const Video = (props) => {
@@ -132,20 +130,27 @@ const Room = (props) => {
     return peer;
   }
 
+  const classes = useStyles();
+
   return (
-    <Container>
-      {peers.map((peer, index) => {
-        return (
-          <>
-            <Video key={index} peer={peer} />
-            <p>{`this is ${peer.peerName}'s video`}</p>
-          </>
-        );
-      })}
-      <StyledVideo muted ref={userVideo} autoPlay playsInline />
-      <p>{`this is ${user.name}'s video`}</p>
-      {/* <Trivia connection={connection} pair={pair} roomLobby={roomLobby} /> */}
-    </Container>
+    <Grid container className={classes.root} spacing={0.5}>
+      <Grid item xs={12}>
+        <Grid container justify="center" spacing={1}>
+              <Grid item xs={12/(peers.length+1)}>
+                <StyledVideo muted ref={userVideo} autoPlay playsInline />
+                <p>{`${user.name}'s video`}</p>
+              </Grid>
+          {peers.map((peer, index) => {
+            return (
+              <Grid key={index} item xs={12/(peers.length+1)}>
+                <Video key={index} peer={peer} />
+                <p>{`${peer.peerName}'s video`}</p>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Grid>
+    </Grid>    
   );
 };
 

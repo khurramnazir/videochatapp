@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import * as api from "../utils/api";
+import {
+  Button,
+} from "@material-ui/core";
+import useStyles from "../styling/styles";
 
 const Trivia = (props) => {
   const [gameStarted, setGameStarted] = useState(false);

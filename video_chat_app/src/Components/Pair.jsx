@@ -8,7 +8,7 @@ import GameSelector from "./GameSelector";
 const Pair = (props) => {
   const { roomLobby, pair, connection } = props;
   let user = props.location.state.user;
-  const [gameSelected, setGameSelected] = useState("No Game");
+  const [gameSelected, setGameSelected] = useState("All Games");
   const [isYourGo, setIsYourGo] = useState(false);
 
   return (
@@ -16,6 +16,7 @@ const Pair = (props) => {
       {props.location.key !== "initial" ? (
         <>
           <p>{`Welcome to ${pair} of ${roomLobby.split("=")[0]}!`}</p>
+
           <Video
             connection={connection}
             roomLobby={roomLobby}
