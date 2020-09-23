@@ -27,8 +27,8 @@
 
 .whiteboard {
   border: solid 1px red;
-  height: 500px;
-  width: 750px;
+  height: 50%;
+  width: 50%;
   position: relative;
   left: 0;
   right: 0;
