@@ -75,6 +75,10 @@ io.on("connection", (socket) => {
     socket.to(roomLobby + pair).emit("receivedGame", game);
   });
 
+  socket.on("sendPlayerSwap", ({ pair, roomLobby }) => {
+    socket.to(roomLobby + pair).emit("receivedPlayerSwap");
+  });
+
   socket.on("sendQuestion", ({ pair, roomLobby, triv }) => {
     socket.to(roomLobby + pair).emit("recievedQuestion", triv);
   });

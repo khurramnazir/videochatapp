@@ -27,7 +27,7 @@
 
 .whiteboard {
   border: solid 1px red;
-  height: 50%;
+  height: 400px;
   width: 50%;
   position: relative;
   left: 0;
@@ -65,4 +65,8 @@
 }
 .color.yellow {
   background-color: yellow;
+}
+
+.gameIcon {
+  max-height: 100px;
 }

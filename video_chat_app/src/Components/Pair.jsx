@@ -22,10 +22,11 @@ const Pair = (props) => {
             pair={pair}
             user={user}
           />
+
           <GameSelector
             setGameSelected={setGameSelected}
             gameSelected={gameSelected}
-            isYourGo={isYourGo}
+            setIsYourGo={setIsYourGo}
             connection={connection}
             pair={pair}
             roomLobby={roomLobby}
@@ -36,6 +37,8 @@ const Pair = (props) => {
               connection={connection}
               pair={pair}
               roomLobby={roomLobby}
+              setIsYourGo={setIsYourGo}
+              isYourGo={isYourGo}
             />
           )}
           {gameSelected === "Trivia" && (
