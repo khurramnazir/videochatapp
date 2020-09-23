@@ -24,6 +24,12 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(3),
   },
+  root: {
+    width: 250,
+  },
+  chatTimeGrid: {
+    padding: 30,
+  },
 }));
 
 export default useStyles;

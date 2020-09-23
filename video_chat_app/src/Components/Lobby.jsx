@@ -18,15 +18,18 @@ import {
   FormLabel,
   FormHelperText,
   Radio,
+  Grid,
+  Slider,
+  Input,
 } from "@material-ui/core";
-//import FaceIcon from "@material-ui/icons/Face";
+import TimerIcon from "@material-ui/icons/Timer";
 import useStyles from "../styling/styles";
 
 const Lobby = (props) => {
   const [users, setUsers] = useState([]);
   const [URL, setURL] = useState(null);
   const [isCopied, setIsCopied] = useState(false);
-  const [chatTime, setChatTime] = useState(null);
+  const [chatTime, setChatTime] = useState(3);
   const [helperText, setHelperText] = useState("");
   let user = props.location.state;
   const { origin, pathname } = props.location;
@@ -50,7 +53,7 @@ const Lobby = (props) => {
         }
       });
 
-      connection.on("getAllPairs", (pairs) => {
+      connection.on("getAllPairs", ({ pairs, chatTime }) => {
         let index;
         if (mounted) {
           pairs.forEach((pair, i) => {
@@ -63,6 +66,7 @@ const Lobby = (props) => {
             if (isPair.length === 1) index = i + 1;
           });
           const url = origin + pathname + `/${index}`;
+          setChatTime(chatTime);
           setURL(url);
         }
       });
@@ -74,18 +78,15 @@ const Lobby = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!chatTime) {
-      setHelperText("Please select an option.");
-    } else {
-      connection.emit("move room", {
-        roomLobby,
-      });
-    }
+
+    connection.emit("move room", {
+      roomLobby,
+      chatTime,
+    });
   };
 
-  const handleRadioChange = (event) => {
-    setChatTime(event.target.value);
-    setHelperText(" ");
+  const handleSliderChange = (event, newValue) => {
+    setChatTime(newValue);
   };
 
   if (URL !== null && indexInPair === 0)
@@ -142,7 +143,7 @@ const Lobby = (props) => {
                 <ListItem alignItems="center">
                   <ListItemAvatar>
                     <Avatar className={classes.avatar}>
-                      {/* {user.name.slice(0, 1).toUpperCase()} */}
+                      {user.name.slice(0, 1).toUpperCase()}
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText>{user.name}</ListItemText>
@@ -150,7 +151,7 @@ const Lobby = (props) => {
               </Box>
             );
           })}
-          {user.type === "admin" && (
+          {/* {user.type === "admin" && (
             <form onSubmit={handleSubmit}>
               <FormControl component="fieldset" className={classes.formControl}>
                 <FormLabel component="legend">
@@ -163,7 +164,7 @@ const Lobby = (props) => {
                   onChange={handleRadioChange}
                 >
                   <FormControlLabel
-                    value="8000"
+                    value="5000"
                     control={<Radio />}
                     label="One minute"
                   />
@@ -179,6 +180,7 @@ const Lobby = (props) => {
                   />
                 </RadioGroup>
                 <FormHelperText>{helperText}</FormHelperText>
+
                 <Button
                   type="submit"
                   variant="contained"
@@ -190,6 +192,45 @@ const Lobby = (props) => {
                 </Button>
               </FormControl>
             </form>
+          )} */}
+          {user.type === "admin" && (
+            <div className={classes.root}>
+              <Typography
+                className={classes.chatTimeGrid}
+                id="discrete-slider-always"
+                gutterBottom
+              >
+                Set Chat Time (minutes)
+              </Typography>
+
+              <Grid container spacing={2}>
+                <Grid item>
+                  <TimerIcon />
+                </Grid>
+                <Grid item xs>
+                  <Slider
+                    defaultValue={3}
+                    // getAriaValueText={valuetext}
+                    aria-labelledby="discrete-slider-always"
+                    step={1}
+                    max={10}
+                    min={1}
+                    valueLabelDisplay="on"
+                    onChange={handleSliderChange}
+                  />
+                </Grid>
+              </Grid>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                fullWidth
+                onClick={handleSubmit}
+              >
+                START CHAT
+              </Button>
+            </div>
           )}
         </div>
       ) : (

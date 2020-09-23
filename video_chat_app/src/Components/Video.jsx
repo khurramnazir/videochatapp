@@ -45,6 +45,7 @@ const Room = (props) => {
   const userVideo = useRef();
   const peersRef = useRef([]);
   const { connection, roomLobby, pair, chatTime } = props;
+  console.log(chatTime, "<<<chattime");
 
   const createPeer = useCallback(
     (userToSignal, callerID, stream) => {
@@ -147,7 +148,14 @@ const Room = (props) => {
 
   return (
     <Container>
-      <Countdown chatTime={chatTime} roomLobby={roomLobby} myInfo={myInfo[0]} />
+      <Countdown
+        chatTime={chatTime}
+        roomLobby={roomLobby}
+        myInfo={myInfo[0]}
+        connection={connection}
+        pair={pair}
+        userVideo={userVideo}
+      />
       {peers.map((peer, index) => {
         return (
           <ul key={index}>
@@ -157,7 +165,8 @@ const Room = (props) => {
         );
       })}
       <StyledVideo muted ref={userVideo} autoPlay playsInline />
-      {/* <p>{`this is ${myInfo[0].name}'s video`}</p> */}
+      {myInfo.length > 0 && <p>{`this is ${myInfo[0].name}'s video`}</p>}
+
       {/* <Trivia connection={connection} pair={pair} roomLobby={roomLobby} /> */}
     </Container>
   );

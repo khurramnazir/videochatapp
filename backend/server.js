@@ -26,6 +26,7 @@ io.on("connection", (socket) => {
     io.in(roomLobby).emit("usersInLobby", allUsers[roomLobby]);
 
     socket.on("disconnect", (reason) => {
+      console.log(socket.client.id, reason);
       const newArr = allUsers[roomLobby].filter((user) => {
         return user.id !== socket.client.id;
       });
@@ -34,9 +35,9 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("move room", ({ roomLobby }) => {
+  socket.on("move room", ({ roomLobby, chatTime }) => {
     pairs = pairUp(allUsers[roomLobby]);
-    io.in(roomLobby).emit("getAllPairs", pairs);
+    io.in(roomLobby).emit("getAllPairs", { pairs, chatTime });
   });
 
   socket.on("join pair", ({ pair, roomLobby }) => {
@@ -49,6 +50,10 @@ io.on("connection", (socket) => {
     io.in(roomLobby).emit("usersInLobby", allUsers[roomLobby]);
 
     io.in(roomLobby + pair).emit("getPairInfo", pairs[pair - 1]);
+  });
+
+  socket.on("leave pair", ({ roomLobby, pair }) => {
+    socket.leave(roomLobby + pair);
   });
 
   socket.on("getAllOtherUsers", ({ pair, roomLobby }) => {

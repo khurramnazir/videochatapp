@@ -8,11 +8,11 @@ import Lobby from "./Components/Lobby";
 import Login from "./Components/Login";
 import Pair from "./Components/Pair";
 
-
 import ErrorPage from "./Components/ErrorPage";
 
 import io from "socket.io-client";
 import { useEffect, useRef } from "react";
+import ThanksPage from "./Components/ThanksPage";
 
 const App = () => {
   //io({ transports: ["websocket"], upgrade: false });
@@ -32,6 +32,7 @@ const App = () => {
       <Router>
         <RoomCreator path="/" />
         <Lobby path="/:roomLobby" connection={connection} />
+        <ThanksPage path="/:roomLobby/thanks" connection={connection} />
         <Login path="/login/:roomLobby" connection={connection} />
         <Pair path="/:roomLobby/:pair" connection={connection} />
         <ErrorPage default status={404} msg={"Path not found"} />
