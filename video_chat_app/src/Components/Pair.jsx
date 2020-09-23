@@ -7,12 +7,12 @@ import ErrorPage from "./ErrorPage";
 
 const Pair = (props) => {
   const { roomLobby, pair, connection } = props;
-  let user = props.location.state.user;
-  
-//   let [showPartner, setShowPartner] = useState(false);
-//   const updateShowPartner = () => {
-//     setShowPartner(true);
-//   };
+  // let user = props.location.state.user || null;
+
+  //   let [showPartner, setShowPartner] = useState(false);
+  //   const updateShowPartner = () => {
+  //     setShowPartner(true);
+  //   };
 
   return (
     <div>
@@ -25,7 +25,7 @@ const Pair = (props) => {
             connection={connection}
             roomLobby={roomLobby}
             pair={pair}
-            user={user}
+            // user={user}
           />
           <Pictionary
             connection={connection}
