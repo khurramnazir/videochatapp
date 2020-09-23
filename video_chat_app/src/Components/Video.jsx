@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import Peer from "simple-peer";
 import styled from "styled-components";
 //import Trivia from "../Components/Trivia";
+import Countdown from "../Components/CountDown";
 
 const Container = styled.div`
   padding: 20px;
@@ -40,10 +41,10 @@ const Video = (props) => {
 
 const Room = (props) => {
   const [peers, setPeers] = useState([]);
-  const [myName, setMyName] = useState([]);
+  const [myInfo, setMyInfo] = useState([]);
   const userVideo = useRef();
   const peersRef = useRef([]);
-  const { connection, roomLobby, pair } = props;
+  const { connection, roomLobby, pair, chatTime } = props;
 
   const createPeer = useCallback(
     (userToSignal, callerID, stream) => {
@@ -97,7 +98,8 @@ const Room = (props) => {
           const myInfo = pairs.filter((user) => {
             return user.id === connection.id;
           });
-          setMyName(myInfo[0].name);
+          setMyInfo(myInfo);
+          console.log(myInfo);
 
           const peers = [];
           users.forEach((userID) => {
@@ -141,42 +143,11 @@ const Room = (props) => {
           item.peer.signal(payload.signal);
         });
       });
-  }, [addPeer, createPeer, connection, pair, roomLobby]);
-
-  // function createPeer(userToSignal, callerID, stream) {
-  //   const peer = new Peer({
-  //     initiator: true,
-  //     trickle: false,
-  //     stream,
-  //   });
-
-  //   peer.on("signal", (signal) => {
-  //     connection.emit("sending signal", {
-  //       userToSignal,
-  //       callerID,
-  //       signal,
-  //       pair,
-  //     });
-  //   });
-
-  //   return peer;
-  // }
-
-  // function addPeer(incomingSignal, callerID, stream) {
-  //   const peer = new Peer({
-  //     initiator: false,
-  //     trickle: false,
-  //     stream,
-  //   });
-  //   peer.on("signal", (signal) => {
-  //     connection.emit("returning signal", { signal, callerID });
-  //   });
-  //   peer.signal(incomingSignal);
-  //   return peer;
-  // }
+  }, [addPeer, createPeer, connection, pair, roomLobby, userVideo]);
 
   return (
     <Container>
+      <Countdown chatTime={chatTime} roomLobby={roomLobby} myInfo={myInfo[0]} />
       {peers.map((peer, index) => {
         return (
           <ul key={index}>
@@ -186,7 +157,7 @@ const Room = (props) => {
         );
       })}
       <StyledVideo muted ref={userVideo} autoPlay playsInline />
-      <p>{`this is ${myName}'s video`}</p>
+      {/* <p>{`this is ${myInfo[0].name}'s video`}</p> */}
       {/* <Trivia connection={connection} pair={pair} roomLobby={roomLobby} /> */}
     </Container>
   );

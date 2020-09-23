@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { navigate } from "@reach/router";
 
-const CountDown = ({ updateShowPartner }) => {
-  let [timeLeft, setTimeLeft] = useState(10);
+const CountDown = ({ chatTime, roomLobby, myInfo }) => {
+  let [timeLeft, setTimeLeft] = useState(chatTime / 1000);
 
   const take1Second = () => {
     setTimeLeft(timeLeft - 1);
@@ -12,7 +13,7 @@ const CountDown = ({ updateShowPartner }) => {
       setTimeout(take1Second, 1000);
     }
     if (timeLeft === 0) {
-      updateShowPartner();
+      navigate("/" + roomLobby, { state: { myInfo } });
     }
   });
 

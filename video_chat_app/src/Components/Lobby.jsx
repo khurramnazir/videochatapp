@@ -12,6 +12,12 @@ import {
   Box,
   Typography,
   Avatar,
+  FormControl,
+  FormControlLabel,
+  RadioGroup,
+  FormLabel,
+  FormHelperText,
+  Radio,
 } from "@material-ui/core";
 //import FaceIcon from "@material-ui/icons/Face";
 import useStyles from "../styling/styles";
@@ -20,6 +26,8 @@ const Lobby = (props) => {
   const [users, setUsers] = useState([]);
   const [URL, setURL] = useState(null);
   const [isCopied, setIsCopied] = useState(false);
+  const [chatTime, setChatTime] = useState(null);
+  const [helperText, setHelperText] = useState("");
   let user = props.location.state;
   const { origin, pathname } = props.location;
   const link = origin + "/login" + pathname;
@@ -64,27 +72,37 @@ const Lobby = (props) => {
     };
   }, [connection, origin, pathname, roomLobby, user]);
 
-  const handleClick = () => {
-    connection.emit("move room", {
-      roomLobby,
-    });
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (!chatTime) {
+      setHelperText("Please select an option.");
+    } else {
+      connection.emit("move room", {
+        roomLobby,
+      });
+    }
+  };
+
+  const handleRadioChange = (event) => {
+    setChatTime(event.target.value);
+    setHelperText(" ");
   };
 
   if (URL !== null && indexInPair === 0)
     navigate(URL, {
-      state: { user },
+      state: { chatTime },
     });
   if (URL !== null && indexInPair === 1) {
     setTimeout(function () {
       navigate(URL, {
-        state: { user },
+        state: { chatTime },
       });
     }, 1000);
   }
   if (URL !== null && indexInPair === 2) {
     setTimeout(function () {
       navigate(URL, {
-        state: { user },
+        state: { chatTime },
       });
     }, 2000);
   }
@@ -124,7 +142,7 @@ const Lobby = (props) => {
                 <ListItem alignItems="center">
                   <ListItemAvatar>
                     <Avatar className={classes.avatar}>
-                      {user.name.slice(0, 1).toUpperCase()}
+                      {/* {user.name.slice(0, 1).toUpperCase()} */}
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText>{user.name}</ListItemText>
@@ -133,15 +151,45 @@ const Lobby = (props) => {
             );
           })}
           {user.type === "admin" && (
-            <Button
-              onClick={handleClick}
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              fullWidth
-            >
-              START CHAT
-            </Button>
+            <form onSubmit={handleSubmit}>
+              <FormControl component="fieldset" className={classes.formControl}>
+                <FormLabel component="legend">
+                  Please select a duration:
+                </FormLabel>
+                <RadioGroup
+                  aria-label="time-options"
+                  name="time-options"
+                  value={chatTime}
+                  onChange={handleRadioChange}
+                >
+                  <FormControlLabel
+                    value="8000"
+                    control={<Radio />}
+                    label="One minute"
+                  />
+                  <FormControlLabel
+                    value="120000"
+                    control={<Radio />}
+                    label="Two minutes"
+                  />
+                  <FormControlLabel
+                    value="300000"
+                    control={<Radio />}
+                    label="Five minutes"
+                  />
+                </RadioGroup>
+                <FormHelperText>{helperText}</FormHelperText>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  fullWidth
+                >
+                  START CHAT
+                </Button>
+              </FormControl>
+            </form>
           )}
         </div>
       ) : (

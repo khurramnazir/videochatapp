@@ -7,7 +7,11 @@ import ErrorPage from "./ErrorPage";
 
 const Pair = (props) => {
   const { roomLobby, pair, connection } = props;
-  // let user = props.location.state.user || null;
+
+  let chatTime = 0;
+  if (props.location.state) {
+    chatTime = props.location.state.chatTime;
+  }
 
   //   let [showPartner, setShowPartner] = useState(false);
   //   const updateShowPartner = () => {
@@ -25,7 +29,7 @@ const Pair = (props) => {
             connection={connection}
             roomLobby={roomLobby}
             pair={pair}
-            // user={user}
+            chatTime={chatTime}
           />
           <Pictionary
             connection={connection}

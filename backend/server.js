@@ -41,6 +41,13 @@ io.on("connection", (socket) => {
 
   socket.on("join pair", ({ pair, roomLobby }) => {
     socket.join(roomLobby + pair);
+    socket.leave(roomLobby);
+    const newArr = allUsers[roomLobby].filter((user) => {
+      return user.id !== socket.client.id;
+    });
+    allUsers[roomLobby] = newArr;
+    io.in(roomLobby).emit("usersInLobby", allUsers[roomLobby]);
+
     io.in(roomLobby + pair).emit("getPairInfo", pairs[pair - 1]);
   });
 
