@@ -11,6 +11,7 @@ const Pair = (props) => {
   const [gameSelected, setGameSelected] = useState("All Games");
   const [isYourGo, setIsYourGo] = useState(false);
 
+
   return (
     <div>
       {props.location.key !== "initial" ? (
@@ -21,7 +22,7 @@ const Pair = (props) => {
             connection={connection}
             roomLobby={roomLobby}
             pair={pair}
-            user={user}
+            // user={user}
           />
 
           <GameSelector

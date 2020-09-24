@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import Peer from "simple-peer";
 import styled from "styled-components";
 import Grid from '@material-ui/core/Grid';
@@ -38,10 +38,48 @@ const Video = (props) => {
 
 const Room = (props) => {
   const [peers, setPeers] = useState([]);
+  const [myName, setMyName] = useState([]);
   const userVideo = useRef();
   const peersRef = useRef([]);
+  const { connection, roomLobby, pair } = props;
 
-  const { connection, roomLobby, pair, user } = props;
+  const createPeer = useCallback(
+    (userToSignal, callerID, stream) => {
+      const peer = new Peer({
+        initiator: true,
+        trickle: false,
+        stream,
+      });
+
+      peer.on("signal", (signal) => {
+        connection.emit("sending signal", {
+          userToSignal,
+          callerID,
+          signal,
+          pair,
+        });
+      });
+
+      return peer;
+    },
+    [connection, pair]
+  );
+
+  const addPeer = useCallback(
+    (incomingSignal, callerID, stream) => {
+      const peer = new Peer({
+        initiator: false,
+        trickle: false,
+        stream,
+      });
+      peer.on("signal", (signal) => {
+        connection.emit("returning signal", { signal, callerID });
+      });
+      peer.signal(incomingSignal);
+      return peer;
+    },
+    [connection]
+  );
 
   useEffect(() => {
     connection.emit("join pair", { pair, roomLobby });
@@ -54,6 +92,11 @@ const Room = (props) => {
         userVideo.current.srcObject = stream;
         connection.emit("getAllOtherUsers", { pair, roomLobby });
         connection.on("all other users", ({ users, pairs }) => {
+          const myInfo = pairs.filter((user) => {
+            return user.id === connection.id;
+          });
+          setMyName(myInfo[0].name);
+
           const peers = [];
           users.forEach((userID) => {
             const peerName = pairs.filter((user) => {
@@ -96,39 +139,39 @@ const Room = (props) => {
           item.peer.signal(payload.signal);
         });
       });
-  }, []);
+  }, [addPeer, createPeer, connection, pair, roomLobby]);
 
-  function createPeer(userToSignal, callerID, stream) {
-    const peer = new Peer({
-      initiator: true,
-      trickle: false,
-      stream,
-    });
+  // function createPeer(userToSignal, callerID, stream) {
+  //   const peer = new Peer({
+  //     initiator: true,
+  //     trickle: false,
+  //     stream,
+  //   });
 
-    peer.on("signal", (signal) => {
-      connection.emit("sending signal", {
-        userToSignal,
-        callerID,
-        signal,
-        pair,
-      });
-    });
+  //   peer.on("signal", (signal) => {
+  //     connection.emit("sending signal", {
+  //       userToSignal,
+  //       callerID,
+  //       signal,
+  //       pair,
+  //     });
+  //   });
 
-    return peer;
-  }
+  //   return peer;
+  // }
 
-  function addPeer(incomingSignal, callerID, stream) {
-    const peer = new Peer({
-      initiator: false,
-      trickle: false,
-      stream,
-    });
-    peer.on("signal", (signal) => {
-      connection.emit("returning signal", { signal, callerID });
-    });
-    peer.signal(incomingSignal);
-    return peer;
-  }
+  // function addPeer(incomingSignal, callerID, stream) {
+  //   const peer = new Peer({
+  //     initiator: false,
+  //     trickle: false,
+  //     stream,
+  //   });
+  //   peer.on("signal", (signal) => {
+  //     connection.emit("returning signal", { signal, callerID });
+  //   });
+  //   peer.signal(incomingSignal);
+  //   return peer;
+  // }
 
   const classes = useStyles();
 

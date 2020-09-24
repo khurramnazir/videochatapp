@@ -29,9 +29,7 @@ const Lobby = (props) => {
 
   useEffect(() => {
     let mounted = true;
-    if (connection === "") {
-      user = false;
-    } else {
+    if (connection !== "" && user) {
       connection.emit("join room", {
         roomLobby,
         username: user.name,
@@ -64,7 +62,7 @@ const Lobby = (props) => {
     return function cleanup() {
       mounted = false;
     };
-  }, []);
+  }, [connection, origin, pathname, roomLobby, user]);
 
   const handleClick = () => {
     connection.emit("move room", {
@@ -94,7 +92,7 @@ const Lobby = (props) => {
   return (
     <Container component="main" maxWidth="sm">
       <CssBaseline />
-      {user ? (
+      {connection !== "" && user ? (
         <div className={classes.paper}>
           <Typography variant="h5">
             Hello {user.name}! You are now in the {roomLobby.split("=")[0]}{" "}
