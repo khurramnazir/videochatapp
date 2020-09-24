@@ -3,9 +3,7 @@ import React, { useEffect, useRef } from "react";
 const Whiteboard = (props) => {
   const whiteboardRef = useRef();
   const colorsRef = useRef();
-
-  const { connection, pair, roomLobby } = props;
-
+  const { connection, pair, roomLobby, isYourGo } = props;
   let drawing = false;
   let current = { color: "black" };
 
@@ -47,33 +45,46 @@ const Whiteboard = (props) => {
     }
 
     function onMouseDown(e) {
-      drawing = true;
-      current.x = e.clientX;
-      current.y = e.clientY;
+      if (isYourGo) {
+        drawing = true;
+        current.x = e.clientX;
+        current.y = e.clientY;
+      }
     }
 
     function onMouseUp(e) {
-      if (!drawing) {
-        return;
+      if (isYourGo) {
+        if (!drawing) {
+          return;
+        }
+        drawing = false;
+        drawLine(
+          current.x,
+          current.y,
+          e.clientX,
+          e.clientY,
+          current.color,
+          true
+        );
       }
-      drawing = false;
-      drawLine(
-        current.x,
-        current.y,
-        e.clientX || e.touches[0].clientX,
-        e.clientY || e.touches[0].clientY,
-        current.color,
-        true
-      );
     }
 
     function onMouseMove(e) {
-      if (!drawing) {
-        return;
+      if (isYourGo) {
+        if (!drawing) {
+          return;
+        }
+        drawLine(
+          current.x,
+          current.y,
+          e.clientX,
+          e.clientY,
+          current.color,
+          true
+        );
+        current.x = e.clientX;
+        current.y = e.clientY;
       }
-      drawLine(current.x, current.y, e.clientX, e.clientY, current.color, true);
-      current.x = e.clientX;
-      current.y = e.clientY;
     }
 
     // limit the number of events per second

@@ -83,6 +83,14 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on("sendGame", ({ pair, roomLobby, game }) => {
+    socket.to(roomLobby + pair).emit("receivedGame", game);
+  });
+
+  socket.on("sendPlayerSwap", ({ pair, roomLobby }) => {
+    socket.to(roomLobby + pair).emit("receivedPlayerSwap");
+  });
+
   socket.on("sendQuestion", ({ pair, roomLobby, triv }) => {
     socket.to(roomLobby + pair).emit("recievedQuestion", triv);
   });
