@@ -10,6 +10,10 @@ import {
 import useStyles from "../styling/styles";
 import { v1 as uuid } from "uuid";
 
+import Card from "@material-ui/core/Card";
+
+import CardContent from "@material-ui/core/CardContent";
+
 const RoomCreator = () => {
   const [name, setName] = useState("");
   const [roomName, setRoomName] = useState("");
@@ -26,45 +30,49 @@ const RoomCreator = () => {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <div className={classes.paper}>
-        <Typography component="h1" variant="h5">
-          Welcome! Please create a room by filling in the details below...
-        </Typography>
-        <form className={classes.form} onSubmit={handleSubmit}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="name"
-            placeholder="Your name"
-            name="name"
-            autoFocus
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="roomName"
-            placeholder="Room name"
-            id="roomName"
-            onChange={(e) => {
-              setRoomName(e.target.value);
-            }}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.button}
-          >
-            Create Room
-          </Button>
-        </form>
-      </div>
+      <Card className={classes.cardRootHome}>
+        <CardContent>
+          <div className={classes.paper}>
+            <Typography component="h1" variant="h5">
+              Welcome! Please create a room by filling in the details below...
+            </Typography>
+            <form className={classes.form} onSubmit={handleSubmit}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="name"
+                placeholder="Your name"
+                name="name"
+                autoFocus
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="roomName"
+                placeholder="Room name"
+                id="roomName"
+                onChange={(e) => {
+                  setRoomName(e.target.value);
+                }}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.button}
+              >
+                Create Room
+              </Button>
+            </form>
+          </div>
+        </CardContent>
+      </Card>
     </Container>
   );
 };
