@@ -34,6 +34,16 @@ const useStyles = makeStyles((theme) => ({
   chatTimeGrid: {
     padding: 30,
   },
+
+  cardRootLobby: {
+    minWidth: 250,
+    marginTop: 10,
+  },
+
+  cardRootHome: {
+    minWidth: 250,
+    marginTop: 100,
+  },
 }));
 
 export default useStyles;

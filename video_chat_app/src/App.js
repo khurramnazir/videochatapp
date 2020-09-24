@@ -7,6 +7,7 @@ import RoomCreator from "./Components/RoomCreator";
 import Lobby from "./Components/Lobby";
 import Login from "./Components/Login";
 import Pair from "./Components/Pair";
+import NavBar from "./Components/NavBar";
 
 import ErrorPage from "./Components/ErrorPage";
 
@@ -28,9 +29,10 @@ const App = () => {
 
   return (
     <div className="App">
-      <Header />
+      <NavBar />
+      {/* <Header /> */}
       <Router>
-        <RoomCreator path="/" />
+        <RoomCreator path="/createroom" />
         <Lobby path="/:roomLobby" connection={connection} />
         <ThanksPage path="/:roomLobby/thanks" connection={connection} />
         <Login path="/login/:roomLobby" connection={connection} />
