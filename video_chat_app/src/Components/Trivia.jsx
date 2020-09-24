@@ -2,10 +2,14 @@ import React, { useState, useEffect } from "react";
 import * as api from "../utils/api";
 import {
   Button,
+  FormControl,
+  RadioGroup,
+  FormControlLabel,
+  Typography,
+  Radio,
+  Grid,
 } from "@material-ui/core";
 import useStyles from "../styling/styles";
-import Grid from "@material-ui/core/Grid";
-
 
 const Trivia = (props) => {
   const [gameStarted, setGameStarted] = useState(false);
@@ -15,6 +19,7 @@ const Trivia = (props) => {
   const [submitted, setSubmitted] = useState(false);
   let [points, setPoints] = useState(0);
   const { connection, pair, roomLobby } = props;
+  const classes = useStyles();
 
   useEffect(() => {
     connection.on("recievedQuestion", (triv) => {
@@ -24,11 +29,6 @@ const Trivia = (props) => {
       setPartnerAnswer(null);
       setYourAnswer(null);
     });
-
-    // connection.on("recievedSubmitted", (isSubmitted) => {
-    //   calcPoints();
-    //   setSubmitted(isSubmitted);
-    // });
 
     connection.on("recievedAnswer", (ans) => {
       ans === "true" ? setPartnerAnswer(true) : setPartnerAnswer(false);
@@ -75,61 +75,81 @@ const Trivia = (props) => {
     setPoints(points + count);
   }
 
-  const classes = useStyles();
-
   return (
     <Grid container className={classes.root} spacing={5}>
       <Grid item xs={9}>
         {gameStarted === false ? (
-            <Button 
-            onClick={()=>{startGame()}} 
-            variant="contained" 
-            color="primary" 
+          <Button
+            onClick={() => {
+              startGame();
+            }}
+            variant="contained"
+            color="primary"
             className={classes.button}
-            > Start Game </Button>
-          ) : (
-            <>
-              <p dangerouslySetInnerHTML={{ __html: trivia.question }} />
-              <Button 
-              onClick={()=>{sendAnswer(true)}} 
-              // value={true}
-              variant="contained" 
-              color="primary" 
-              className={classes.button}>
-                True
-              </Button>
-              <Button 
-              onClick={()=>{sendAnswer(false)}} 
-              // value={false}
-              variant="contained" 
-              color="primary" 
-              className={classes.button}>
-                False
-              </Button>
-              <br />
-              {yourAnswer !== null && partnerAnswer !== null && !submitted && (
-                <Button 
-                onClick={()=>{submitAnswers()}}
-                variant="contained" 
-                color="primary" 
-                className={classes.button}
-              > Submit </Button>
-              )}
-              <br />
-              {submitted && (
-              <>
-                <p> {JSON.stringify(trivia.correct_answer)} </p>
-                <Button 
-                onClick={()=>{getTrivia()}}  
+          >
+            {" "}
+            Start Game{" "}
+          </Button>
+        ) : (
+          <>
+            <p dangerouslySetInnerHTML={{ __html: trivia.question }} />
+
+            <FormControl component="fieldset">
+              <RadioGroup
+                row
+                value={yourAnswer}
+                onChange={(e) => {
+                  const answer = e.target.value;
+                  sendAnswer(answer);
+                }}
+              >
+                <FormControlLabel
+                  value={true}
+                  control={<Radio />}
+                  label="True"
+                />
+                <FormControlLabel
+                  value={false}
+                  control={<Radio color="secondary" />}
+                  label="False"
+                />
+              </RadioGroup>
+            </FormControl>
+
+            <br />
+            {yourAnswer !== null && partnerAnswer !== null && !submitted && (
+              <Button
+                onClick={() => {
+                  submitAnswers();
+                }}
                 variant="contained"
                 color="primary"
                 className={classes.button}
-                > Next Question </Button>
+              >
+                Submit
+              </Button>
+            )}
+            <br />
+            {submitted && (
+              <>
+                <Typography variant="h4">
+                  {" "}
+                  {JSON.stringify(trivia.correct_answer)}{" "}
+                </Typography>
+                <Button
+                  onClick={() => {
+                    getTrivia();
+                  }}
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                >
+                  Next Question
+                </Button>
               </>
             )}
-            </>
-          )}
-
+          </>
+        )}
       </Grid>
       <Grid item xs={3}>
         <>
@@ -138,38 +158,9 @@ const Trivia = (props) => {
             src="https://logopond.com/logos/7cbefd1c803c7e9515ea4be59233da29.png"
             alt="Trivia"
           />
-          {gameStarted === true &&
-          <p> so far you have {points} points </p>}
+          {gameStarted === true && <p> so far you have {points} points </p>}
         </>
       </Grid>
-      
-      {/* {gameStarted === false ? (
-        <button onClick={startGame}> Start Game </button>
-      ) : (
-        <>
-          <p> so far you have {points} points </p>
-          <p dangerouslySetInnerHTML={{ __html: trivia.question }} />
-          <button onClick={sendAnswer} value={true}>
-            {" "}
-            True{" "}
-          </button>
-          <button onClick={sendAnswer} value={false}>
-            {" "}
-            False{" "}
-          </button>
-          <br />
-          {yourAnswer !== null && partnerAnswer !== null && !submitted && (
-            <button onClick={submitAnswers}> Submit </button>
-          )}
-          <br />
-          {submitted && (
-            <>
-              <p> {JSON.stringify(trivia.correct_answer)} </p>
-              <button onClick={getTrivia}> Next Question </button>
-            </>
-          )}
-        </>
-      )} */}
     </Grid>
   );
 };
