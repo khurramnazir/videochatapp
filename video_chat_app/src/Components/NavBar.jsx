@@ -6,7 +6,6 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import HomeIcon from "@material-ui/icons/Home";
-import { navigate } from "@reach/router";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,11 +23,7 @@ export default function ButtonAppBar() {
   const classes = useStyles();
 
   const handleClick = () => {
-    // userVideo.current.srcObject.getTracks().forEach(function (track) {
-    //   track.stop();
-    // });
     window.location = "/";
-    // navigate("/");
   };
 
   return (
@@ -43,10 +38,10 @@ export default function ButtonAppBar() {
           >
             <HomeIcon onClick={handleClick} />
           </IconButton>
-          <Typography variant="h5" className={classes.title}>
+          <Typography variant="h1" className={classes.title}>
             PAIR UP
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit">Contact Us</Button>
         </Toolbar>
       </AppBar>
     </div>

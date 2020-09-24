@@ -8,12 +8,12 @@ import Lobby from "./Components/Lobby";
 import Login from "./Components/Login";
 import Pair from "./Components/Pair";
 import NavBar from "./Components/NavBar";
-
 import ErrorPage from "./Components/ErrorPage";
-
 import io from "socket.io-client";
 import { useEffect, useRef } from "react";
 import ThanksPage from "./Components/ThanksPage";
+import Homepage from "./Components/Homepage";
+import Footer from "./Components/Footer";
 
 const App = () => {
   //io({ transports: ["websocket"], upgrade: false });
@@ -30,8 +30,8 @@ const App = () => {
   return (
     <div className="App">
       <NavBar />
-      {/* <Header /> */}
       <Router>
+        <Homepage path="/" />
         <RoomCreator path="/createroom" />
         <Lobby path="/:roomLobby" connection={connection} />
         <ThanksPage path="/:roomLobby/thanks" connection={connection} />
@@ -39,6 +39,7 @@ const App = () => {
         <Pair path="/:roomLobby/:pair" connection={connection} />
         <ErrorPage default status={404} msg={"Path not found"} />
       </Router>
+      {/* <Footer /> */}
     </div>
   );
 };
