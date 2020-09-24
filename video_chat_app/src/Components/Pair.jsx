@@ -7,9 +7,14 @@ import GameSelector from "./GameSelector";
 
 const Pair = (props) => {
   const { roomLobby, pair, connection } = props;
-  let user = props.location.state.user;
+
+  let chatTime = 0;
+  if (props.location.state) {
+    chatTime = props.location.state.chatTime;
+  }
   const [gameSelected, setGameSelected] = useState("All Games");
   const [isYourGo, setIsYourGo] = useState(false);
+
 
 
   return (
@@ -22,7 +27,7 @@ const Pair = (props) => {
             connection={connection}
             roomLobby={roomLobby}
             pair={pair}
-            // user={user}
+            chatTime={chatTime}
           />
 
           <GameSelector

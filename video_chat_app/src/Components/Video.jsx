@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import Peer from "simple-peer";
 import styled from "styled-components";
+import Countdown from "../Components/CountDown";
 import Grid from '@material-ui/core/Grid';
 import useStyles from "../styling/styles";
+
 
 const Container = styled.div`
   padding: 20px;
@@ -38,10 +40,11 @@ const Video = (props) => {
 
 const Room = (props) => {
   const [peers, setPeers] = useState([]);
-  const [myName, setMyName] = useState([]);
+  const [myInfo, setMyInfo] = useState([]);
   const userVideo = useRef();
   const peersRef = useRef([]);
-  const { connection, roomLobby, pair } = props;
+  const { connection, roomLobby, pair, chatTime } = props;
+  console.log(chatTime, "<<<chattime");
 
   const createPeer = useCallback(
     (userToSignal, callerID, stream) => {
@@ -95,7 +98,8 @@ const Room = (props) => {
           const myInfo = pairs.filter((user) => {
             return user.id === connection.id;
           });
-          setMyName(myInfo[0].name);
+          setMyInfo(myInfo);
+          console.log(myInfo);
 
           const peers = [];
           users.forEach((userID) => {
@@ -139,39 +143,7 @@ const Room = (props) => {
           item.peer.signal(payload.signal);
         });
       });
-  }, [addPeer, createPeer, connection, pair, roomLobby]);
-
-  // function createPeer(userToSignal, callerID, stream) {
-  //   const peer = new Peer({
-  //     initiator: true,
-  //     trickle: false,
-  //     stream,
-  //   });
-
-  //   peer.on("signal", (signal) => {
-  //     connection.emit("sending signal", {
-  //       userToSignal,
-  //       callerID,
-  //       signal,
-  //       pair,
-  //     });
-  //   });
-
-  //   return peer;
-  // }
-
-  // function addPeer(incomingSignal, callerID, stream) {
-  //   const peer = new Peer({
-  //     initiator: false,
-  //     trickle: false,
-  //     stream,
-  //   });
-  //   peer.on("signal", (signal) => {
-  //     connection.emit("returning signal", { signal, callerID });
-  //   });
-  //   peer.signal(incomingSignal);
-  //   return peer;
-  // }
+  }, [addPeer, createPeer, connection, pair, roomLobby, userVideo]);
 
   const classes = useStyles();
 
@@ -180,8 +152,18 @@ const Room = (props) => {
       <Grid item xs={12}>
         <Grid container justify="center" spacing={1}>
               <Grid item xs={12/(peers.length+1)}>
+      <Countdown
+        chatTime={chatTime}
+        roomLobby={roomLobby}
+        myInfo={myInfo[0]}
+        connection={connection}
+        pair={pair}
+        userVideo={userVideo}
+      />
+<!--                 <StyledVideo muted ref={userVideo} autoPlay playsInline />
+                <p>{`${user.name}'s video`}</p> -->
                 <StyledVideo muted ref={userVideo} autoPlay playsInline />
-                <p>{`${user.name}'s video`}</p>
+                {myInfo.length > 0 && <p>{`this is ${myInfo[0].name}'s video`}</p>
               </Grid>
           {peers.map((peer, index) => {
             return (
