@@ -28,19 +28,21 @@ const App = () => {
   }, []);
 
   return (
-    <div className="App">
+    <>
       <NavBar />
-      <Router>
-        <Homepage path="/" />
-        <RoomCreator path="/createroom" />
-        <Lobby path="/:roomLobby" connection={connection} />
-        <ThanksPage path="/:roomLobby/thanks" connection={connection} />
-        <Login path="/login/:roomLobby" connection={connection} />
-        <Pair path="/:roomLobby/:pair" connection={connection} />
-        <ErrorPage default status={404} msg={"Path not found"} />
-      </Router>
-      {/* <Footer /> */}
-    </div>
+      <div className="App">
+        <Router>
+          <Homepage path="/" />
+          <RoomCreator path="/createroom" />
+          <Lobby path="/:roomLobby" connection={connection} />
+          <ThanksPage path="/:roomLobby/thanks" connection={connection} />
+          <Login path="/login/:roomLobby" connection={connection} />
+          <Pair path="/:roomLobby/:pair" connection={connection} />
+          <ErrorPage default status={404} msg={"Path not found"} />
+        </Router>
+        {/* <Footer /> */}
+      </div>
+    </>
   );
 };
 

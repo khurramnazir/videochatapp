@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "Gochi Hand",
   },
   paper: {
-    marginTop: theme.spacing(5),
+    // marginTop: theme.spacing(5),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -45,7 +45,15 @@ const useStyles = makeStyles((theme) => ({
 
   cardRootHome: {
     minWidth: 250,
-    marginTop: 100,
+    marginBottom: 100,
+  },
+  rootHome: {
+    minWidth: 250,
+    // spacing: 0.5,
+    // direction: "row",
+    // justify: "center",
+    alignItems: "center",
+    marginBottom: 200,
   },
   background: {
     backgroundImage: `url(${"https://images.unsplash.com/photo-1596748925247-cbb6c6785261?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"})`,
@@ -61,6 +69,16 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     heigth: "100vh",
+  },
+  titleFont: {
+    fontFamily: "Damion",
+    textAlign: "left",
+  },
+  introText: {
+    textAlign: "left",
+  },
+  pear: {
+    fontSize: 200,
   },
 }));
 

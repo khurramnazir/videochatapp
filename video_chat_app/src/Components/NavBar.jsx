@@ -16,6 +16,8 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    fontFamily: "Damion",
+    textAlign: "center",
   },
 }));
 
@@ -36,12 +38,11 @@ export default function ButtonAppBar() {
             color="inherit"
             aria-label="menu"
           >
-            <HomeIcon onClick={handleClick} />
+            <HomeIcon onClick={handleClick} fontSize="large" />
           </IconButton>
-          <Typography variant="h1" className={classes.title}>
-            PAIR UP
+          <Typography variant="h2" className={classes.title}>
+            Pair Up!
           </Typography>
-          <Button color="inherit">Contact Us</Button>
         </Toolbar>
       </AppBar>
     </div>
