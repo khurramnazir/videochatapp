@@ -5,6 +5,7 @@ import useStyles from "../styling/styles";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import SyncAltIcon from "@material-ui/icons/SyncAlt";
+import Typography from '@material-ui/core/Typography';
 
 const Pictionary = (props) => {
   const [randomObject, setRandomObject] = useState(null);
@@ -32,24 +33,29 @@ const Pictionary = (props) => {
   }
 
   return (
-    <div className={classes.root}>
-      <Grid container spacing={3}>
+    <Grid container className={classes.root} spacing={5}>
+      <Grid item xs={9}>
+            <Whiteboard
+              connection={connection}
+              pair={pair}
+              roomLobby={roomLobby}
+              isYourGo={isYourGo}
+              />
+      </Grid>
+      <Grid item xs={3}>
+          <img
+              className="gameIcon"
+              src="https://mir-s3-cdn-cf.behance.net/projects/404/7810265.5473edf9ace35.jpg"
+              alt="Pictionary"
+          />
+
+
         {isYourGo ? (
           <>
-            <Grid item xs={12}>
-              <p>It's your turn to draw!</p>
-            </Grid>
-            <Grid item xs={12}>
-              <p>{`Please draw a "${randomObject}"`}</p>
-            </Grid>
-            <Grid item xs={12}>
-              {" "}
-              <p>
-                When you have finished click swap player for the other person to
-                take over drawing
-              </p>
-            </Grid>
-            <Grid item xs={12}>
+              <p>Its your turn!</p> 
+              <p>Please draw a...</p> 
+        <Typography variant="h4" color="primary">{randomObject}</Typography>         
+              
               <Button
                 onClick={() => {
                   swapPlayers();
@@ -61,23 +67,16 @@ const Pictionary = (props) => {
               >
                 Swap Players
               </Button>
-            </Grid>
+              {/* <p>
+                When you have finished click swap player for the other person to
+                take over drawing
+              </p> */}
           </>
         ) : (
-          <Grid item xs={12}>
             <p>It's your turn to guess!</p>
-          </Grid>
         )}
-        <Grid item xs={12}>
-          <Whiteboard
-            connection={connection}
-            pair={pair}
-            roomLobby={roomLobby}
-            isYourGo={isYourGo}
-          />
-        </Grid>
       </Grid>
-    </div>
+    </Grid>
   );
 };
 

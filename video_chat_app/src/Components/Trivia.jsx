@@ -4,6 +4,8 @@ import {
   Button,
 } from "@material-ui/core";
 import useStyles from "../styling/styles";
+import Grid from "@material-ui/core/Grid";
+
 
 const Trivia = (props) => {
   const [gameStarted, setGameStarted] = useState(false);
@@ -40,8 +42,7 @@ const Trivia = (props) => {
     });
   });
 
-  function sendAnswer(e) {
-    const ans = e.target.value;
+  function sendAnswer(ans) {
     ans === "true" ? setYourAnswer(true) : setYourAnswer(false);
     connection.emit("sendAns", { pair, roomLobby, ans });
   }
@@ -74,10 +75,75 @@ const Trivia = (props) => {
     setPoints(points + count);
   }
 
+  const classes = useStyles();
+
   return (
-    <>
-      <h2> Trivia Game </h2>
-      {gameStarted === false ? (
+    <Grid container className={classes.root} spacing={5}>
+      <Grid item xs={9}>
+        {gameStarted === false ? (
+            <Button 
+            onClick={()=>{startGame()}} 
+            variant="contained" 
+            color="primary" 
+            className={classes.button}
+            > Start Game </Button>
+          ) : (
+            <>
+              <p dangerouslySetInnerHTML={{ __html: trivia.question }} />
+              <Button 
+              onClick={()=>{sendAnswer(true)}} 
+              // value={true}
+              variant="contained" 
+              color="primary" 
+              className={classes.button}>
+                True
+              </Button>
+              <Button 
+              onClick={()=>{sendAnswer(false)}} 
+              // value={false}
+              variant="contained" 
+              color="primary" 
+              className={classes.button}>
+                False
+              </Button>
+              <br />
+              {yourAnswer !== null && partnerAnswer !== null && !submitted && (
+                <Button 
+                onClick={()=>{submitAnswers()}}
+                variant="contained" 
+                color="primary" 
+                className={classes.button}
+              > Submit </Button>
+              )}
+              <br />
+              {submitted && (
+              <>
+                <p> {JSON.stringify(trivia.correct_answer)} </p>
+                <Button 
+                onClick={()=>{getTrivia()}}  
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                > Next Question </Button>
+              </>
+            )}
+            </>
+          )}
+
+      </Grid>
+      <Grid item xs={3}>
+        <>
+          <img
+            className="gameIcon"
+            src="https://logopond.com/logos/7cbefd1c803c7e9515ea4be59233da29.png"
+            alt="Trivia"
+          />
+          {gameStarted === true &&
+          <p> so far you have {points} points </p>}
+        </>
+      </Grid>
+      
+      {/* {gameStarted === false ? (
         <button onClick={startGame}> Start Game </button>
       ) : (
         <>
@@ -103,8 +169,8 @@ const Trivia = (props) => {
             </>
           )}
         </>
-      )}
-    </>
+      )} */}
+    </Grid>
   );
 };
 

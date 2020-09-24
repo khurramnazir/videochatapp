@@ -46,8 +46,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    marginLeft: "10%",
-    marginRight: "10%",
+    // marginLeft: "10%",
+    // marginRight: "10%",
   },
 }));
 

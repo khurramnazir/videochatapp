@@ -1,4 +1,8 @@
 import React, { useEffect, useRef } from "react";
+import Grid from "@material-ui/core/Grid";
+import useStyles from "../styling/styles";
+import CreateIcon from '@material-ui/icons/Create';
+
 
 const Whiteboard = (props) => {
   const whiteboardRef = useRef();
@@ -121,18 +125,22 @@ const Whiteboard = (props) => {
     connection.emit("drawing", { pair, roomLobby, data });
   }
 
-  return (
-    <>
-      <canvas ref={whiteboardRef} className="whiteboard"></canvas>
+  const classes = useStyles();
 
-      <div ref={colorsRef} className="colors">
+  return (
+    <Grid container className={classes.root} spacing={1} >
+      <Grid item  xs={1} ref={colorsRef} className="colors" direction="column" alignItems="flex-start" >
+        <button className="color icon" ><CreateIcon/></button>
         <button className="color black" onClick={onColorUpdate}></button>
         <button className="color red" onClick={onColorUpdate}></button>
         <button className="color green" onClick={onColorUpdate}></button>
         <button className="color blue" onClick={onColorUpdate}></button>
         <button className="color yellow" onClick={onColorUpdate}></button>
-      </div>
-    </>
+      </Grid>
+      <Grid item xs={11} >
+      <canvas ref={whiteboardRef} className="whiteboard"></canvas>
+      </Grid>
+    </Grid>
   );
 };
 
