@@ -24,6 +24,9 @@ import {
 } from "@material-ui/core";
 import TimerIcon from "@material-ui/icons/Timer";
 import useStyles from "../styling/styles";
+import Card from "@material-ui/core/Card";
+
+import CardContent from "@material-ui/core/CardContent";
 
 const Lobby = (props) => {
   const [users, setUsers] = useState([]);
@@ -134,65 +137,27 @@ const Lobby = (props) => {
           )}
 
           <br />
-          <Typography variant="h6">
-            {`Lobby participants: ${users.length}`}{" "}
-          </Typography>
-          {users.map((user) => {
-            return (
-              <Box key={user.name}>
-                <ListItem alignItems="center">
-                  <ListItemAvatar>
-                    <Avatar className={classes.avatar}>
-                      {user.name.slice(0, 1).toUpperCase()}
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText>{user.name}</ListItemText>
-                </ListItem>
-              </Box>
-            );
-          })}
-          {/* {user.type === "admin" && (
-            <form onSubmit={handleSubmit}>
-              <FormControl component="fieldset" className={classes.formControl}>
-                <FormLabel component="legend">
-                  Please select a duration:
-                </FormLabel>
-                <RadioGroup
-                  aria-label="time-options"
-                  name="time-options"
-                  value={chatTime}
-                  onChange={handleRadioChange}
-                >
-                  <FormControlLabel
-                    value="5000"
-                    control={<Radio />}
-                    label="One minute"
-                  />
-                  <FormControlLabel
-                    value="120000"
-                    control={<Radio />}
-                    label="Two minutes"
-                  />
-                  <FormControlLabel
-                    value="300000"
-                    control={<Radio />}
-                    label="Five minutes"
-                  />
-                </RadioGroup>
-                <FormHelperText>{helperText}</FormHelperText>
-
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  fullWidth
-                >
-                  START CHAT
-                </Button>
-              </FormControl>
-            </form>
-          )} */}
+          <Card className={classes.cardRootLobby}>
+            <CardContent>
+              <Typography variant="h6">
+                {`Lobby participants: ${users.length}`}{" "}
+              </Typography>
+              {users.map((user) => {
+                return (
+                  <Box key={user.name}>
+                    <ListItem alignItems="center">
+                      <ListItemAvatar>
+                        <Avatar className={classes.avatar}>
+                          {user.name.slice(0, 1).toUpperCase()}
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText>{user.name}</ListItemText>
+                    </ListItem>
+                  </Box>
+                );
+              })}
+            </CardContent>
+          </Card>
           {user.type === "admin" && (
             <div className={classes.root}>
               <Typography
