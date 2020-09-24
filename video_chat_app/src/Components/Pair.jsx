@@ -15,21 +15,10 @@ const Pair = (props) => {
   const [gameSelected, setGameSelected] = useState("All Games");
   const [isYourGo, setIsYourGo] = useState(false);
 
-
-
   return (
     <div>
       {props.location.key !== "initial" ? (
         <>
-          <p>{`Welcome to ${pair} of ${roomLobby.split("=")[0]}!`}</p>
-
-          <Video
-            connection={connection}
-            roomLobby={roomLobby}
-            pair={pair}
-            chatTime={chatTime}
-          />
-
           <GameSelector
             setGameSelected={setGameSelected}
             gameSelected={gameSelected}
@@ -38,7 +27,13 @@ const Pair = (props) => {
             pair={pair}
             roomLobby={roomLobby}
           />
-
+          <p>{`Welcome to ${pair} of ${roomLobby.split("=")[0]}!`}</p>
+          <Video
+            connection={connection}
+            roomLobby={roomLobby}
+            pair={pair}
+            chatTime={chatTime}
+          />
           {gameSelected === "Pictionary" && (
             <Pictionary
               connection={connection}

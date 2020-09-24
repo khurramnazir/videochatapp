@@ -89,7 +89,7 @@ const Room = (props) => {
     //   setUsersInPair(pairs);
     // });
     navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
+      .getUserMedia({ video: true, audio: false })
       .then((stream) => {
         userVideo.current.srcObject = stream;
         connection.emit("getAllOtherUsers", { pair, roomLobby });
