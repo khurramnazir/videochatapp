@@ -21,19 +21,18 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(3, 0, 2),
   },
-  
+
   formControl: {
     margin: theme.spacing(3),
   },
-  
+
   root: {
     flexGrow: 1,
-    width: 250,
+    // width: 250,
   },
-  
+
   chatTimeGrid: {
     padding: 30,
-
   },
 }));
 

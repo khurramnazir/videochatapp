@@ -2,9 +2,8 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import Peer from "simple-peer";
 import styled from "styled-components";
 import Countdown from "../Components/CountDown";
-import Grid from '@material-ui/core/Grid';
+import Grid from "@material-ui/core/Grid";
 import useStyles from "../styling/styles";
-
 
 const Container = styled.div`
   padding: 20px;
@@ -90,7 +89,7 @@ const Room = (props) => {
     //   setUsersInPair(pairs);
     // });
     navigator.mediaDevices
-      .getUserMedia({ video: true, audio: false })
+      .getUserMedia({ video: true, audio: true })
       .then((stream) => {
         userVideo.current.srcObject = stream;
         connection.emit("getAllOtherUsers", { pair, roomLobby });
@@ -148,10 +147,7 @@ const Room = (props) => {
   const classes = useStyles();
 
   return (
-    <Grid container className={classes.root} spacing={0.5}>
-      <Grid item xs={12}>
-        <Grid container justify="center" spacing={1}>
-              <Grid item xs={12/(peers.length+1)}>
+    <>
       <Countdown
         chatTime={chatTime}
         roomLobby={roomLobby}
@@ -160,22 +156,25 @@ const Room = (props) => {
         pair={pair}
         userVideo={userVideo}
       />
-<!--                 <StyledVideo muted ref={userVideo} autoPlay playsInline />
-                <p>{`${user.name}'s video`}</p> -->
-                <StyledVideo muted ref={userVideo} autoPlay playsInline />
-                {myInfo.length > 0 && <p>{`this is ${myInfo[0].name}'s video`}</p>
-              </Grid>
-          {peers.map((peer, index) => {
-            return (
-              <Grid key={index} item xs={12/(peers.length+1)}>
-                <Video key={index} peer={peer} />
-                <p>{`${peer.peerName}'s video`}</p>
-              </Grid>
-            );
-          })}
+      <Grid container className={classes.root} spacing={0.5}>
+        <Grid item xs={12}>
+          <Grid container justify="center" spacing={1}>
+            <Grid item xs={12 / (peers.length + 1)}>
+              <StyledVideo muted ref={userVideo} autoPlay playsInline />
+              {myInfo.length > 0 && <p>{`${myInfo[0].name}'s video`}</p>}
+            </Grid>
+            {peers.map((peer, index) => {
+              return (
+                <Grid key={index} item xs={12 / (peers.length + 1)}>
+                  <Video key={index} peer={peer} />
+                  <p>{`${peer.peerName}'s video`}</p>
+                </Grid>
+              );
+            })}
+          </Grid>
         </Grid>
       </Grid>
-    </Grid>    
+    </>
   );
 };
 
