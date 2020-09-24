@@ -4,6 +4,7 @@ import Trivia from "../Components/Trivia";
 import Pictionary from "../Components/Pictionary";
 import ErrorPage from "./ErrorPage";
 import GameSelector from "./GameSelector";
+import {Container} from "@material-ui/core";
 
 const Pair = (props) => {
   const { roomLobby, pair, connection } = props;
@@ -15,21 +16,10 @@ const Pair = (props) => {
   const [gameSelected, setGameSelected] = useState("All Games");
   const [isYourGo, setIsYourGo] = useState(false);
 
-
-
   return (
-    <div>
+    <Container component="main" maxWidth="md">
       {props.location.key !== "initial" ? (
         <>
-          <p>{`Welcome to ${pair} of ${roomLobby.split("=")[0]}!`}</p>
-
-          <Video
-            connection={connection}
-            roomLobby={roomLobby}
-            pair={pair}
-            chatTime={chatTime}
-          />
-
           <GameSelector
             setGameSelected={setGameSelected}
             gameSelected={gameSelected}
@@ -38,7 +28,13 @@ const Pair = (props) => {
             pair={pair}
             roomLobby={roomLobby}
           />
-
+          {/* <p>{`Welcome to ${pair} of ${roomLobby.split("=")[0]}!`}</p> */}
+          <Video
+            connection={connection}
+            roomLobby={roomLobby}
+            pair={pair}
+            chatTime={chatTime}
+          />
           {gameSelected === "Pictionary" && (
             <Pictionary
               connection={connection}
@@ -55,7 +51,7 @@ const Pair = (props) => {
       ) : (
         <ErrorPage msg={"incorrect login procedure/URL"} status={"404"} />
       )}
-    </div>
+    </Container>
   );
 };
 

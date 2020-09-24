@@ -1,6 +1,12 @@
 import React, { useEffect } from "react";
-import Button from "@material-ui/core/Button";
+import {
+  Button,
+  BottomNavigation,
+  BottomNavigationAction,
+} from "@material-ui/core";
 import useStyles from "../styling/styles";
+import GestureIcon from "@material-ui/icons/Gesture";
+import ContactSupportIcon from "@material-ui/icons/ContactSupport";
 import SportsEsportsIcon from "@material-ui/icons/SportsEsports";
 
 const GameSelector = ({
@@ -20,18 +26,37 @@ const GameSelector = ({
 
   const classes = useStyles();
 
-  function selectGame(e) {
+  function selectGame(clickedGame) {
     // const game = e.target.id;
-    const game = e;
-    console.log(game);
+    const game = clickedGame;
     setGameSelected(game);
     setIsYourGo(true);
     connection.emit("sendGame", { pair, roomLobby, game });
   }
 
   return (
-    <>
-      {gameSelected === "All Games" ? (
+    <BottomNavigation
+      value={gameSelected}
+      onChange={(event, newGameSelected) => {
+        selectGame(newGameSelected);
+      }}
+      showLabels
+      className={classes.gameBar}
+    >
+      <p>Games:</p>
+      <BottomNavigationAction
+        label="Trivia"
+        value="Trivia"
+        icon={<ContactSupportIcon />}
+      />
+      <BottomNavigationAction
+        label="Pictionary"
+        value="Pictionary"
+        icon={<GestureIcon />}
+      />
+    </BottomNavigation>
+
+    /* {gameSelected === "All Games" ? (
         <>
           <p>Pick a game to play</p>
           <Button
@@ -77,8 +102,7 @@ const GameSelector = ({
         >
           All Games
         </Button>
-      )}
-    </>
+      )} */
   );
 };
 export default GameSelector;

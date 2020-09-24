@@ -1,4 +1,7 @@
 import { makeStyles } from "@material-ui/core/styles";
+
+import { palette } from "@material-ui/system";
+
 //import { deepOrange, deepPurple } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +41,18 @@ const useStyles = makeStyles((theme) => ({
     padding: 30,
   },
 
+
+  gameBar: {
+    background: "linear-gradient(45deg, #D8EAFF 30%, #BED0FF 90%)",
+    color: "#3F51B5",
+    border: "solid 1px #3F51B5",
+    borderRadius: "5px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    // marginLeft: "10%",
+    // marginRight: "10%",
+  },
   cardRootLobby: {
     minWidth: 250,
     marginTop: 10,
@@ -79,6 +94,7 @@ const useStyles = makeStyles((theme) => ({
   },
   pear: {
     fontSize: 200,
+
   },
 }));
 

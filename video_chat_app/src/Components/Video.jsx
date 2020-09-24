@@ -5,24 +5,14 @@ import Countdown from "../Components/CountDown";
 import Grid from "@material-ui/core/Grid";
 import useStyles from "../styling/styles";
 
-const Container = styled.div`
-  padding: 20px;
-  display: flex;
-  height: 100vh;
-  width: 90%;
-  flex-direction: row;
-  margin: auto;
-  flex-wrap: wrap;
-`;
-
 const StyledVideo = styled.video`
-  max-width: 80%;
-  border: solid 1px red;
+  max-width: 100%;
+  border-radius: 10px
 `;
 
 const StyledPartnerVideo = styled.video`
-  max-width: 80%;
-  border: solid 1px green;
+  max-width: 100%;
+  border-radius: 10px
 `;
 
 const Video = (props) => {
@@ -89,7 +79,7 @@ const Room = (props) => {
     //   setUsersInPair(pairs);
     // });
     navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
+      .getUserMedia({ video: true, audio: false })
       .then((stream) => {
         userVideo.current.srcObject = stream;
         connection.emit("getAllOtherUsers", { pair, roomLobby });
@@ -156,18 +146,18 @@ const Room = (props) => {
         pair={pair}
         userVideo={userVideo}
       />
-      <Grid container className={classes.root} spacing={0.5}>
+      <Grid container className={classes.root} spacing={1}>
         <Grid item xs={12}>
           <Grid container justify="center" spacing={1}>
-            <Grid item xs={12 / (peers.length + 1)}>
-              <StyledVideo muted ref={userVideo} autoPlay playsInline />
+            <Grid item xs={12 / (peers.length + 1)}> 
               {myInfo.length > 0 && <p>{`${myInfo[0].name}'s video`}</p>}
+              <StyledVideo muted ref={userVideo} autoPlay playsInline />
             </Grid>
             {peers.map((peer, index) => {
               return (
                 <Grid key={index} item xs={12 / (peers.length + 1)}>
-                  <Video key={index} peer={peer} />
                   <p>{`${peer.peerName}'s video`}</p>
+                  <Video key={index} peer={peer} />
                 </Grid>
               );
             })}
