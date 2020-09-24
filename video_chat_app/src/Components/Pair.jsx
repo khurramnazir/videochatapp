@@ -1,39 +1,51 @@
-import React from "react";
-//import CountDown from "../Components/CountDown";
+import React, { useEffect, useState } from "react";
 import Video from "../Components/Video";
 import Trivia from "../Components/Trivia";
 import Pictionary from "../Components/Pictionary";
 import ErrorPage from "./ErrorPage";
+import GameSelector from "./GameSelector";
 
 const Pair = (props) => {
   const { roomLobby, pair, connection } = props;
-  // let user = props.location.state.user || null;
+  let user = props.location.state.user;
+  const [gameSelected, setGameSelected] = useState("All Games");
+  const [isYourGo, setIsYourGo] = useState(false);
 
-  //   let [showPartner, setShowPartner] = useState(false);
-  //   const updateShowPartner = () => {
-  //     setShowPartner(true);
-  //   };
 
   return (
     <div>
       {props.location.key !== "initial" ? (
         <>
           <p>{`Welcome to ${pair} of ${roomLobby.split("=")[0]}!`}</p>
-          {/* <CountDown updateShowPartner={updateShowPartner} /> */}
+
           <Video
-            //showPartner={showPartner}
             connection={connection}
             roomLobby={roomLobby}
             pair={pair}
             // user={user}
           />
-          <Pictionary
+
+          <GameSelector
+            setGameSelected={setGameSelected}
+            gameSelected={gameSelected}
+            setIsYourGo={setIsYourGo}
             connection={connection}
             pair={pair}
             roomLobby={roomLobby}
           />
 
-          <Trivia connection={connection} pair={pair} roomLobby={roomLobby} />
+          {gameSelected === "Pictionary" && (
+            <Pictionary
+              connection={connection}
+              pair={pair}
+              roomLobby={roomLobby}
+              setIsYourGo={setIsYourGo}
+              isYourGo={isYourGo}
+            />
+          )}
+          {gameSelected === "Trivia" && (
+            <Trivia connection={connection} pair={pair} roomLobby={roomLobby} />
+          )}
         </>
       ) : (
         <ErrorPage msg={"incorrect login procedure/URL"} status={"404"} />

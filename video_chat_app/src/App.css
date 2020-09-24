@@ -27,8 +27,8 @@
 
 .whiteboard {
   border: solid 1px red;
-  height: 500px;
-  width: 750px;
+  height: 400px;
+  width: 50%;
   position: relative;
   left: 0;
   right: 0;
@@ -39,7 +39,6 @@
 
 .colors {
   position: relative;
-  border: dashed 5px blue;
 }
 
 .color {
@@ -65,4 +64,8 @@
 }
 .color.yellow {
   background-color: yellow;
+}
+
+.gameIcon {
+  max-height: 100px;
 }
